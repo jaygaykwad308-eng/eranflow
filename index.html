@@ -2,192 +2,167 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EarnFlow - Earn Rewards</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EarnFlow | Earn Rewards</title>
 <style>
+:root{--bg:#080c09;--card:#121a14;--green:#a5ff18;--muted:#8c9a8e;--line:#26352a}
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#f3f6fb;color:#172033}
-header{background:#172554;color:white;padding:22px 18px}
-header h1{margin:0;font-size:26px}
-header p{margin:7px 0 0;color:#cbd5e1}
-main{max-width:750px;margin:auto;padding:18px}
-.card{background:white;padding:18px;border-radius:15px;margin-bottom:16px;box-shadow:0 3px 15px #0000000c}
-.balance{background:#2563eb;color:white}
-.balance h2{font-size:15px;margin:0}
-.amount{font-size:34px;font-weight:bold;margin:12px 0}
-h2{font-size:19px;margin-top:0}
-.task{border:1px solid #e2e8f0;padding:14px;border-radius:12px;margin:12px 0}
-.task h3{margin:0 0 8px}
-.reward{color:#16a34a;font-weight:bold}
-button{border:0;background:#2563eb;color:white;padding:12px 16px;border-radius:9px;font-weight:bold;cursor:pointer}
-input,select{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:8px;margin:8px 0 13px;font-size:15px}
-button:disabled{opacity:.5}
-.small{font-size:13px;color:#64748b}
-.notice{background:#fff7ed;padding:12px;border-radius:9px;color:#9a3412;font-size:13px}
-nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
-nav button{flex:1}
-.secondary{background:#475569}
-.hidden{display:none}
-.item{padding:12px 0;border-bottom:1px solid #e2e8f0}
-footer{text-align:center;padding:20px;color:#64748b;font-size:13px}
+body{margin:0;background:var(--bg);color:#f4f7f4;font-family:Arial,sans-serif}
+header{height:70px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 6%;position:sticky;top:0;background:#080c09;z-index:5}
+.logo{font-size:24px;font-weight:900}.logo span{color:var(--green)}
+main{max-width:1150px;margin:auto;padding:28px 20px 100px}
+h1{font-size:29px;margin:5px 0}h2{font-size:19px}
+p{color:var(--muted);font-size:13px;line-height:1.5}
+.green{color:var(--green)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:17px}
+.welcome{display:flex;justify-content:space-between;align-items:center;margin-bottom:25px}
+button{cursor:pointer;border:0;border-radius:8px;padding:12px 17px;font-weight:bold}
+.primary{background:var(--green);color:#10170b}
+.secondary{background:#243027;color:white;border:1px solid var(--line)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}
+.stat small{color:var(--muted)}
+.stat strong{display:block;font-size:26px;margin-top:13px}
+.balance{background:linear-gradient(120deg,#1c3218,#111a13)}
+.balance strong{font-size:38px;color:var(--green)}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin:24px 0;border-bottom:1px solid var(--line);padding-bottom:15px}
+nav button{background:none;color:var(--muted)}
+nav button.active{background:#20301d;color:var(--green)}
+.page{display:none}.page.active{display:block}
+.heading{display:flex;justify-content:space-between;align-items:center}
+.offers{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.offer{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:18px}
+.offer-icon{width:43px;height:43px;background:#283c20;color:var(--green);display:grid;place-items:center;border-radius:10px;font-size:21px;font-weight:bold}
+.offer-top{display:flex;align-items:center;gap:12px}
+.offer h3{font-size:15px}
+.offer .price{font-size:25px;color:var(--green);font-weight:bold;margin:17px 0}
+.offer button{width:100%}
+.tag{font-size:10px;color:var(--green);background:#20301d;padding:5px 8px;border-radius:20px}
+input{width:100%;padding:13px;background:#080e09;border:1px solid var(--line);border-radius:8px;color:white;margin:8px 0 16px}
+label{font-size:12px;color:#bdc9bf}
+.history{border-bottom:1px solid var(--line);padding:14px 0}
+.notice{background:#202b21;padding:13px;border-radius:9px;color:#b9c6bb;font-size:12px}
+.mobile{display:none}
+footer{text-align:center;padding:25px;color:var(--muted);font-size:12px}
+@media(max-width:700px){
+.stats{grid-template-columns:repeat(2,1fr)}
+.offers{grid-template-columns:1fr}
+.welcome{align-items:flex-start;gap:10px}
+.welcome button{padding:10px;font-size:11px}
+nav{display:none}
+.mobile{display:flex;position:fixed;bottom:0;left:0;right:0;background:#111912;border-top:1px solid var(--line);justify-content:space-around;padding:12px 3px;z-index:5}
+.mobile button{background:none;color:var(--muted);font-size:11px;padding:5px}
+.mobile button.active{color:var(--green)}
+}
 </style>
 </head>
 <body>
 <header>
-<h1>EarnFlow</h1>
-<p>Complete tasks. Submit proof. Earn rewards.</p>
+ <div class="logo">EARN<span>FLOW</span></div>
+ <button class="secondary" onclick="showPage('profile')">My Account</button>
 </header>
-
 <main>
-<div class="card">
-<h2>Welcome to EarnFlow</h2>
-<p>Discover tasks and earn rewards by completing them.</p>
-<p class="small">Prototype account — real OTP login is not connected.</p>
-</div>
+ <div class="welcome">
+  <div>
+   <p>WELCOME TO EARNFLOW</p>
+   <h1>Earn More. <span class="green">Grow More.</span></h1>
+   <p>Discover offers and earn rewards for eligible actions.</p>
+  </div>
+  <button class="primary" onclick="showPage('offers')">Explore Offers →</button>
+ </div>
 
-<div class="card balance">
-<h2>Your Reward Balance</h2>
-<div class="amount" id="balance">₹0</div>
-<p>Available rewards</p>
-</div>
+ <nav id="nav">
+  <button class="active" onclick="showPage('home',this)">Dashboard</button>
+  <button onclick="showPage('offers',this)">Offers</button>
+  <button onclick="showPage('wallet',this)">Wallet</button>
+  <button onclick="showPage('activity',this)">Activity</button>
+  <button onclick="showPage('profile',this)">Profile</button>
+ </nav>
 
-<nav>
-<button onclick="show('tasks')">Tasks</button>
-<button onclick="show('submissions')">My Submissions</button>
-<button onclick="show('wallet')">Withdraw</button>
-</nav>
+ <section id="home" class="page active">
+  <div class="stats">
+   <div class="card stat"><small>Total Clicks</small><strong id="clicks">0</strong></div>
+   <div class="card stat"><small>Conversions</small><strong>0</strong></div>
+   <div class="card stat"><small>Total Earnings</small><strong class="green">₹0</strong></div>
+   <div class="card stat"><small>Pending Rewards</small><strong>₹0</strong></div>
+  </div>
+  <div class="card balance">
+   <p>AVAILABLE BALANCE</p>
+   <strong>₹0.00</strong>
+   <p>Approved rewards available for withdrawal</p>
+   <button class="primary" onclick="showPage('wallet')">Withdraw Funds →</button>
+  </div>
+  <div class="heading"><h2>Trending Offers</h2><button class="secondary" onclick="showPage('offers')">View All</button></div>
+  <div class="offers" id="featured"></div>
+ </section>
 
-<section id="tasks">
-<div class="card">
-<h2>Available Tasks</h2>
+ <section id="offers" class="page">
+  <div class="heading"><h2>Explore Offers</h2><span class="tag">CAMPAIGNS</span></div>
+  <input id="search" placeholder="Search campaigns..." oninput="renderOffers()">
+  <div class="offers" id="offerList"></div>
+ </section>
 
-<div class="task">
-<h3>Visit a Website</h3>
-<p>Visit the campaign website and submit proof.</p>
-<p class="reward">Reward: ₹20</p>
-<button onclick="submitTask('Visit a Website',20)">Submit Proof</button>
-</div>
+ <section id="wallet" class="page">
+  <div class="card balance"><p>YOUR WALLET</p><strong>₹0.00</strong><p>Available reward balance</p></div>
+  <div class="card">
+   <h2>Withdraw Rewards</h2>
+   <p>Minimum withdrawal ₹100</p>
+   <label>Withdrawal amount</label><input type="number" placeholder="Enter amount">
+   <label>UPI ID</label><input placeholder="example@upi">
+   <button class="primary" onclick="alert('Cloud withdrawal service will be connected in the next step.')">Request Withdrawal</button>
+   <div class="notice">Withdrawals will be enabled after secure cloud wallet and admin approval are connected.</div>
+  </div>
+ </section>
 
-<div class="task">
-<h3>Share a Campaign</h3>
-<p>Share the campaign and provide your proof link.</p>
-<p class="reward">Reward: ₹30</p>
-<button onclick="submitTask('Share a Campaign',30)">Submit Proof</button>
-</div>
+ <section id="activity" class="page">
+  <div class="card"><h2>My Activity</h2><div class="history">No activity yet.</div></div>
+ </section>
 
-<div class="task">
-<h3>Complete a Survey</h3>
-<p>Complete the survey and submit your proof.</p>
-<p class="reward">Reward: ₹50</p>
-<button onclick="submitTask('Complete a Survey',50)">Submit Proof</button>
-</div>
-</div>
-</section>
-
-<section id="submissions" class="hidden">
-<div class="card">
-<h2>My Submissions</h2>
-<div id="submissionList">No submissions yet.</div>
-</div>
-</section>
-
-<section id="wallet" class="hidden">
-<div class="card">
-<h2>Withdraw Rewards</h2>
-<p>Minimum withdrawal: ₹100</p>
-<label>Withdrawal Amount (₹)</label>
-<input type="number" id="withdrawAmount" min="100" placeholder="Enter amount">
-<label>UPI ID</label>
-<input type="text" id="upi" placeholder="example@upi">
-<button onclick="withdraw()">Submit Withdrawal Request</button>
-<p class="small">Demo only. No real money will be transferred.</p>
-<div id="withdrawMessage"></div>
-</div>
-</section>
-
-<div class="card">
-<h2>Important Information</h2>
-<div class="notice">
-This is an early frontend prototype. OTP authentication, database storage, admin approval and real UPI payments are not connected yet.
-</div>
-</div>
+ <section id="profile" class="page">
+  <div class="card">
+   <h2>My Profile</h2>
+   <label>Full Name</label><input placeholder="Your name">
+   <label>Email</label><input type="email" placeholder="Email address">
+   <label>Mobile Number</label><input type="tel" placeholder="Mobile number">
+   <button class="primary" onclick="alert('Cloud profile saving will be connected next.')">Save Profile</button>
+  </div>
+ </section>
+ <div class="notice">EarnFlow preview. Campaigns and rewards shown here are examples, not verified live offers or payments.</div>
 </main>
 
+<div class="mobile">
+ <button class="active" onclick="showPage('home',this)">⌂ Home</button>
+ <button onclick="showPage('offers',this)">◈ Offers</button>
+ <button onclick="showPage('wallet',this)">₹ Wallet</button>
+ <button onclick="showPage('activity',this)">▤ Activity</button>
+ <button onclick="showPage('profile',this)">◉ Profile</button>
+</div>
 <footer>© 2026 EarnFlow. All rights reserved.</footer>
 
 <script>
-let balance = Number(localStorage.getItem("earnflowBalance") || 0);
-let submissions = JSON.parse(localStorage.getItem("earnflowSubmissions") || "[]");
-
-function update(){
- document.getElementById("balance").textContent = "₹" + balance;
- localStorage.setItem("earnflowBalance", balance);
- renderSubmissions();
+const offers=[
+ {name:"Trading Account Offer",price:250,icon:"T",desc:"Complete eligible partner registration."},
+ {name:"App Install Campaign",price:75,icon:"A",desc:"Install and complete campaign requirements."},
+ {name:"Survey Campaign",price:50,icon:"S",desc:"Complete an eligible survey."},
+ {name:"Finance Campaign",price:150,icon:"F",desc:"Complete partner campaign requirements."},
+ {name:"New User Offer",price:120,icon:"N",desc:"Complete the listed new user steps."},
+ {name:"Registration Offer",price:100,icon:"R",desc:"Register with the campaign partner."}
+];
+function showPage(id,btn){
+ document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
+ document.getElementById(id).classList.add("active");
+ document.querySelectorAll("nav button,.mobile button").forEach(x=>x.classList.remove("active"));
+ if(btn)btn.classList.add("active");
+ window.scrollTo(0,0);
 }
-
-function show(id){
- ["tasks","submissions","wallet"].forEach(x=>{
-  document.getElementById(x).classList.add("hidden");
- });
- document.getElementById(id).classList.remove("hidden");
+function makeOffer(o){
+ return `<div class="offer"><div class="offer-top"><div class="offer-icon">${o.icon}</div><div><h3>${o.name}</h3><span class="tag">SAMPLE OFFER</span></div></div><p>${o.desc}</p><div class="price">₹${o.price}</div><button class="primary" onclick="alert('This is a sample offer. Live tracking will be connected through Cloudflare.')">View Details →</button></div>`;
 }
-
-function submitTask(name,reward){
- let proof = prompt("Enter your proof link:");
- if(!proof || !proof.trim()) return;
- submissions.push({
-  name:name,
-  reward:reward,
-  proof:proof.trim(),
-  status:"Pending"
- });
- localStorage.setItem("earnflowSubmissions",JSON.stringify(submissions));
- alert("Proof submitted successfully! Status: Pending");
- update();
+function renderOffers(){
+ let q=(document.getElementById("search")?.value||"").toLowerCase();
+ document.getElementById("offerList").innerHTML=offers.filter(o=>o.name.toLowerCase().includes(q)).map(makeOffer).join("");
 }
-
-function renderSubmissions(){
- let box=document.getElementById("submissionList");
- if(!submissions.length){
-  box.textContent="No submissions yet.";
-  return;
- }
- box.innerHTML="";
- submissions.forEach(s=>{
-  let div=document.createElement("div");
-  div.className="item";
-  let title=document.createElement("strong");
-  title.textContent=s.name+" — ₹"+s.reward;
-  let status=document.createElement("p");
-  status.textContent="Status: "+s.status;
-  let link=document.createElement("p");
-  link.textContent="Proof: "+s.proof;
-  div.append(title,status,link);
-  box.appendChild(div);
- });
-}
-
-function withdraw(){
- let amount=Number(document.getElementById("withdrawAmount").value);
- let upi=document.getElementById("upi").value.trim();
- let msg=document.getElementById("withdrawMessage");
-
- if(!Number.isFinite(amount) || amount<100){
-  msg.textContent="Minimum withdrawal amount is ₹100.";
-  return;
- }
- if(amount>balance){
-  msg.textContent="Insufficient reward balance.";
-  return;
- }
- if(!upi || !upi.includes("@")){
-  msg.textContent="Please enter a valid UPI ID.";
-  return;
- }
- msg.textContent="Demo request only. Real withdrawal is not connected.";
-}
-
-update();
+document.getElementById("featured").innerHTML=offers.slice(0,3).map(makeOffer).join("");
+renderOffers();
 </script>
 </body>
 </html>
