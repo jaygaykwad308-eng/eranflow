@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EarnFlow - Earn Rewards</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f3f6fb;color:#172033}
+header{background:#172554;color:white;padding:22px 18px}
+header h1{margin:0;font-size:26px}
+header p{margin:7px 0 0;color:#cbd5e1}
+main{max-width:750px;margin:auto;padding:18px}
+.card{background:white;padding:18px;border-radius:15px;margin-bottom:16px;box-shadow:0 3px 15px #0000000c}
+.balance{background:#2563eb;color:white}
+.balance h2{font-size:15px;margin:0}
+.amount{font-size:34px;font-weight:bold;margin:12px 0}
+h2{font-size:19px;margin-top:0}
+.task{border:1px solid #e2e8f0;padding:14px;border-radius:12px;margin:12px 0}
+.task h3{margin:0 0 8px}
+.reward{color:#16a34a;font-weight:bold}
+button{border:0;background:#2563eb;color:white;padding:12px 16px;border-radius:9px;font-weight:bold;cursor:pointer}
+input,select{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:8px;margin:8px 0 13px;font-size:15px}
+button:disabled{opacity:.5}
+.small{font-size:13px;color:#64748b}
+.notice{background:#fff7ed;padding:12px;border-radius:9px;color:#9a3412;font-size:13px}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+nav button{flex:1}
+.secondary{background:#475569}
+.hidden{display:none}
+.item{padding:12px 0;border-bottom:1px solid #e2e8f0}
+footer{text-align:center;padding:20px;color:#64748b;font-size:13px}
+</style>
+</head>
+<body>
+<header>
+<h1>EarnFlow</h1>
+<p>Complete tasks. Submit proof. Earn rewards.</p>
+</header>
+
+<main>
+<div class="card">
+<h2>Welcome to EarnFlow</h2>
+<p>Discover tasks and earn rewards by completing them.</p>
+<p class="small">Prototype account — real OTP login is not connected.</p>
+</div>
+
+<div class="card balance">
+<h2>Your Reward Balance</h2>
+<div class="amount" id="balance">₹0</div>
+<p>Available rewards</p>
+</div>
+
+<nav>
+<button onclick="show('tasks')">Tasks</button>
+<button onclick="show('submissions')">My Submissions</button>
+<button onclick="show('wallet')">Withdraw</button>
+</nav>
+
+<section id="tasks">
+<div class="card">
+<h2>Available Tasks</h2>
+
+<div class="task">
+<h3>Visit a Website</h3>
+<p>Visit the campaign website and submit proof.</p>
+<p class="reward">Reward: ₹20</p>
+<button onclick="submitTask('Visit a Website',20)">Submit Proof</button>
+</div>
+
+<div class="task">
+<h3>Share a Campaign</h3>
+<p>Share the campaign and provide your proof link.</p>
+<p class="reward">Reward: ₹30</p>
+<button onclick="submitTask('Share a Campaign',30)">Submit Proof</button>
+</div>
+
+<div class="task">
+<h3>Complete a Survey</h3>
+<p>Complete the survey and submit your proof.</p>
+<p class="reward">Reward: ₹50</p>
+<button onclick="submitTask('Complete a Survey',50)">Submit Proof</button>
+</div>
+</div>
+</section>
+
+<section id="submissions" class="hidden">
+<div class="card">
+<h2>My Submissions</h2>
+<div id="submissionList">No submissions yet.</div>
+</div>
+</section>
+
+<section id="wallet" class="hidden">
+<div class="card">
+<h2>Withdraw Rewards</h2>
+<p>Minimum withdrawal: ₹100</p>
+<label>Withdrawal Amount (₹)</label>
+<input type="number" id="withdrawAmount" min="100" placeholder="Enter amount">
+<label>UPI ID</label>
+<input type="text" id="upi" placeholder="example@upi">
+<button onclick="withdraw()">Submit Withdrawal Request</button>
+<p class="small">Demo only. No real money will be transferred.</p>
+<div id="withdrawMessage"></div>
+</div>
+</section>
+
+<div class="card">
+<h2>Important Information</h2>
+<div class="notice">
+This is an early frontend prototype. OTP authentication, database storage, admin approval and real UPI payments are not connected yet.
+</div>
+</div>
+</main>
+
+<footer>© 2026 EarnFlow. All rights reserved.</footer>
+
+<script>
+let balance = Number(localStorage.getItem("earnflowBalance") || 0);
+let submissions = JSON.parse(localStorage.getItem("earnflowSubmissions") || "[]");
+
+function update(){
+ document.getElementById("balance").textContent = "₹" + balance;
+ localStorage.setItem("earnflowBalance", balance);
+ renderSubmissions();
+}
+
+function show(id){
+ ["tasks","submissions","wallet"].forEach(x=>{
+  document.getElementById(x).classList.add("hidden");
+ });
+ document.getElementById(id).classList.remove("hidden");
+}
+
+function submitTask(name,reward){
+ let proof = prompt("Enter your proof link:");
+ if(!proof || !proof.trim()) return;
+ submissions.push({
+  name:name,
+  reward:reward,
+  proof:proof.trim(),
+  status:"Pending"
+ });
+ localStorage.setItem("earnflowSubmissions",JSON.stringify(submissions));
+ alert("Proof submitted successfully! Status: Pending");
+ update();
+}
+
+function renderSubmissions(){
+ let box=document.getElementById("submissionList");
+ if(!submissions.length){
+  box.textContent="No submissions yet.";
+  return;
+ }
+ box.innerHTML="";
+ submissions.forEach(s=>{
+  let div=document.createElement("div");
+  div.className="item";
+  let title=document.createElement("strong");
+  title.textContent=s.name+" — ₹"+s.reward;
+  let status=document.createElement("p");
+  status.textContent="Status: "+s.status;
+  let link=document.createElement("p");
+  link.textContent="Proof: "+s.proof;
+  div.append(title,status,link);
+  box.appendChild(div);
+ });
+}
+
+function withdraw(){
+ let amount=Number(document.getElementById("withdrawAmount").value);
+ let upi=document.getElementById("upi").value.trim();
+ let msg=document.getElementById("withdrawMessage");
+
+ if(!Number.isFinite(amount) || amount<100){
+  msg.textContent="Minimum withdrawal amount is ₹100.";
+  return;
+ }
+ if(amount>balance){
+  msg.textContent="Insufficient reward balance.";
+  return;
+ }
+ if(!upi || !upi.includes("@")){
+  msg.textContent="Please enter a valid UPI ID.";
+  return;
+ }
+ msg.textContent="Demo request only. Real withdrawal is not connected.";
+}
+
+update();
+</script>
+</body>
+</html>
