@@ -4,278 +4,219 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>EarnFlow Admin</title>
+<title>EarnFlow | Earn Rewards</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#080d0a;color:#eef5ef;font-family:Arial,sans-serif}
-header{padding:18px 22px;border-bottom:1px solid #26372b;display:flex;justify-content:space-between;align-items:center}
-.logo{font-size:23px;font-weight:900;color:#a3ff70}
-main{max-width:1100px;margin:auto;padding:22px 15px}
-h1{font-size:27px}
+body{margin:0;background:#080d0a;color:#eef5ef;font-family:Outfit,sans-serif}
+header{padding:18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #26372b}
+.logo{font-size:25px;font-weight:800;color:#a3ff70}
+button{padding:12px 17px;border:0;border-radius:9px;background:#a3ff70;color:#071008;font-weight:700;cursor:pointer}
+input{width:100%;padding:14px;margin:8px 0 15px;background:#101a13;color:white;border:1px solid #304536;border-radius:9px}
+label{font-size:13px;color:#aab9ad}
+main{max-width:950px;margin:auto;padding:20px 15px}
+.card{background:#111a14;border:1px solid #26372b;border-radius:15px;padding:19px;margin:14px 0}
 .muted{color:#91a196;font-size:13px}
-.panel,.card{background:#111a14;border:1px solid #26372b;border-radius:14px;padding:18px;margin:15px 0}
+.green{color:#a3ff70}
+.balance{font-size:34px;font-weight:800;color:#a3ff70;margin-top:10px}
 .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-.number{font-size:28px;font-weight:bold;color:#a3ff70;margin-top:10px}
 nav{display:flex;gap:8px;overflow:auto;margin:20px 0}
-button{padding:12px 16px;border:1px solid #304536;background:#17231a;color:white;border-radius:9px;cursor:pointer}
-button.active,.primary{background:#a3ff70;color:#071008;border:0;font-weight:bold}
-input,textarea,select{width:100%;padding:13px;margin:7px 0 14px;background:#080e0a;color:white;border:1px solid #304536;border-radius:9px}
-label{font-size:13px;color:#b4c2b6}
+nav button{background:#17231a;color:white;white-space:nowrap}
+nav button.active{background:#a3ff70;color:#071008}
+section{display:none}
+section.active{display:block}
 .hidden{display:none!important}
-.offer{border:1px solid #304536;border-radius:11px;padding:15px;margin:12px 0}
-.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-.danger{background:#451c1c;border-color:#713333}
-.notice{padding:12px;background:#1a2b1e;border-radius:9px;margin:12px 0;color:#b9f6a0}
-@media(max-width:600px){main{padding:15px 10px}.grid{grid-template-columns:1fr 1fr}}
+.offer{background:#101a13;border:1px solid #304536;border-radius:12px;padding:16px;margin:12px 0}
+.auth{max-width:400px;margin:50px auto}
+a{color:#a3ff70}
+@media(max-width:500px){main{padding:12px}.balance{font-size:28px}}
 </style>
 </head>
 <body>
 
 <header>
- <div class="logo">EARNFLOW <small style="font-size:11px">ADMIN</small></div>
- <button onclick="logout()">Logout</button>
+ <div class="logo">EARNFLOW<span style="color:white">.</span></div>
+ <button id="logoutBtn" class="hidden" onclick="logout()">Logout</button>
 </header>
 
-<div id="login" class="panel" style="max-width:400px;margin:70px auto">
- <h2>Admin Login</h2>
- <label>Email</label>
- <input id="email" type="email" placeholder="Admin email">
+<div id="auth" class="auth card">
+ <h2 id="authTitle">Welcome Back 👋</h2>
+ <p class="muted">Login or create your EarnFlow account</p>
+
+ <div id="nameBox" class="hidden">
+  <label>Full Name</label>
+  <input id="name" placeholder="Enter your name">
+ </div>
+
+ <label>Email Address</label>
+ <input id="email" type="email" placeholder="Enter email">
+
  <label>Password</label>
- <input id="password" type="password" placeholder="Password">
- <button class="primary" style="width:100%" onclick="login()">Login</button>
- <p id="loginMsg" class="muted"></p>
+ <input id="password" type="password" placeholder="Minimum 8 characters">
+
+ <button style="width:100%" onclick="submitAuth()" id="authBtn">Login</button>
+ <p id="authMsg" class="muted"></p>
+ <p class="muted" style="text-align:center">
+  <span id="switchText">New here?</span>
+  <a href="#" onclick="toggleAuth();return false" id="switchLink">Create Account</a>
+ </p>
 </div>
 
-<main id="app" class="hidden">
- <h1>Admin Dashboard</h1>
- <p class="muted">Manage your EarnFlow platform</p>
+<main id="dashboard" class="hidden">
+ <h2>Hey, <span class="green" id="userName">User</span> 👋</h2>
+ <p class="muted">Welcome to your earning dashboard.</p>
 
  <div class="grid">
-  <div class="card"><small>Total Users</small><div class="number" id="users">—</div></div>
-  <div class="card"><small>Total Offers</small><div class="number" id="totalOffers">—</div></div>
+  <div class="card">
+   <div class="muted">Available Balance</div>
+   <div class="balance">₹<span id="balance">0</span></div>
+  </div>
+  <div class="card">
+   <div class="muted">Account Status</div>
+   <h2 class="green">Active</h2>
+   <div class="muted">EarnFlow Member</div>
+  </div>
  </div>
 
  <nav>
-  <button class="active" onclick="tab('overview',this)">Overview</button>
-  <button onclick="tab('offersTab',this)">Offers</button>
-  <button onclick="tab('usersTab',this)">Users</button>
-  <button onclick="tab('paymentsTab',this)">Payments</button>
+  <button class="active" onclick="showTab('home',this)">Home</button>
+  <button onclick="showTab('offers',this)">Offers</button>
+  <button onclick="showTab('wallet',this)">Wallet</button>
+  <button onclick="showTab('profile',this)">Profile</button>
  </nav>
 
- <section id="overview" class="panel">
-  <h2>Welcome Admin</h2>
-  <p class="muted">Your EarnFlow control center.</p>
-  <div id="status" class="notice">Admin session active.</div>
- </section>
-
- <section id="offersTab" class="panel hidden">
-  <h2>Manage Offers</h2>
-  <input id="offerId" type="hidden">
-
-  <label>Offer Name</label>
-  <input id="offerName" placeholder="Example: XM Account Opening">
-
-  <label>Description</label>
-  <textarea id="description" rows="2" placeholder="Offer details"></textarea>
-
-  <label>CPA Payout (₹)</label>
-  <input id="payout" type="number" min="0" step="0.01" placeholder="500">
-
-  <label>Tracking URL (HTTPS)</label>
-  <input id="tracking" type="url" placeholder="https://example.com/tracking-link">
-
-  <label>Status</label>
-  <select id="offerStatus">
-   <option value="active">Active</option>
-   <option value="inactive">Inactive</option>
-  </select>
-
-  <div class="actions">
-   <button class="primary" onclick="saveOffer()">Save Offer</button>
-   <button onclick="clearForm()">Clear</button>
+ <section id="home" class="active">
+  <div class="card">
+   <h2>Your Earning Journey 🚀</h2>
+   <p class="muted">Complete available offers and track your rewards here.</p>
+   <button onclick="showTab('offers',document.querySelectorAll('nav button')[1])">Explore Offers</button>
   </div>
-
-  <p id="offerMsg" class="muted"></p>
-  <hr style="border-color:#26372b">
-  <h3>All Offers</h3>
-  <button onclick="loadOffers()">Refresh Offers</button>
-  <div id="offerList"></div>
+  <div class="card">
+   <h3>Important</h3>
+   <p class="muted">Rewards are credited after offer verification and approval. Never pay money to complete an offer.</p>
+  </div>
  </section>
 
- <section id="usersTab" class="panel hidden">
-  <h2>User Management</h2>
-  <p class="muted">User management will be connected next.</p>
+ <section id="offers">
+  <div class="card">
+   <h2>Available Offers</h2>
+   <p class="muted">Explore earning opportunities.</p>
+   <div id="offerList" class="muted">Loading offers...</div>
+  </div>
  </section>
 
- <section id="paymentsTab" class="panel hidden">
-  <h2>Payments & Withdrawals</h2>
-  <p class="muted">Payment approval and payout management will be connected next.</p>
+ <section id="wallet">
+  <div class="card">
+   <h2>My Wallet</h2>
+   <div class="balance">₹<span id="walletBalance">0</span></div>
+   <p class="muted">Your current account balance.</p>
+   <p class="muted">Withdrawal requests will be available when payout functionality is connected.</p>
+  </div>
+ </section>
+
+ <section id="profile">
+  <div class="card">
+   <h2>My Profile</h2>
+   <p>Name: <strong id="profileName">—</strong></p>
+   <p>Email: <strong id="profileEmail">—</strong></p>
+   <p class="muted">Your EarnFlow account details.</p>
+  </div>
  </section>
 </main>
 
 <script>
+let registering=false;
+
 async function api(url,options={}){
  const response=await fetch(url,{
   credentials:"include",
   ...options,
-  headers:{
-   "Content-Type":"application/json",
-   ...(options.headers||{})
-  }
+  headers:{"Content-Type":"application/json",...(options.headers||{})}
  });
  const data=await response.json();
  if(!response.ok)throw new Error(data.message||"Request failed");
  return data;
 }
 
-async function checkAdmin(){
+function toggleAuth(){
+ registering=!registering;
+ document.getElementById("nameBox").classList.toggle("hidden",!registering);
+ document.getElementById("authTitle").textContent=registering?"Create Account":"Welcome Back 👋";
+ document.getElementById("authBtn").textContent=registering?"Register":"Login";
+ document.getElementById("switchText").textContent=registering?"Already registered?":"New here?";
+ document.getElementById("switchLink").textContent=registering?"Login":"Create Account";
+ document.getElementById("authMsg").textContent="";
+}
+
+async function submitAuth(){
+ const msg=document.getElementById("authMsg");
+ const email=document.getElementById("email").value.trim();
+ const password=document.getElementById("password").value;
+ msg.textContent="Please wait...";
+ try{
+  if(registering){
+   const name=document.getElementById("name").value.trim();
+   await api("/api/register",{method:"POST",body:JSON.stringify({name,email,password})});
+   msg.textContent="Registration successful. Please login.";
+   registering=false;
+   toggleAuth();
+   return;
+  }
+  await api("/api/login",{method:"POST",body:JSON.stringify({email,password})});
+  await loadUser();
+ }catch(e){msg.textContent=e.message}
+}
+
+async function loadUser(){
  try{
   const data=await api("/api/me");
-  if(!data.user||data.user.role!=="admin")throw new Error("Admin access denied");
-  document.getElementById("login").classList.add("hidden");
-  document.getElementById("app").classList.remove("hidden");
-  document.getElementById("users").textContent="—";
+  const user=data.user;
+  document.getElementById("auth").classList.add("hidden");
+  document.getElementById("dashboard").classList.remove("hidden");
+  document.getElementById("logoutBtn").classList.remove("hidden");
+  document.getElementById("userName").textContent=user.name||"User";
+  document.getElementById("profileName").textContent=user.name||"—";
+  document.getElementById("profileEmail").textContent=user.email||"—";
+  document.getElementById("balance").textContent=Number(user.balance||0).toFixed(2);
+  document.getElementById("walletBalance").textContent=Number(user.balance||0).toFixed(2);
   loadOffers();
  }catch(e){
-  document.getElementById("login").classList.remove("hidden");
-  document.getElementById("app").classList.add("hidden");
+  document.getElementById("auth").classList.remove("hidden");
+  document.getElementById("dashboard").classList.add("hidden");
  }
 }
 
-async function login(){
- const msg=document.getElementById("loginMsg");
- msg.textContent="Logging in...";
- try{
-  await api("/api/login",{method:"POST",body:JSON.stringify({
-   email:document.getElementById("email").value,
-   password:document.getElementById("password").value
-  })});
-  await checkAdmin();
-  if(document.getElementById("app").classList.contains("hidden"))
-   throw new Error("This account is not an admin");
- }catch(e){msg.textContent=e.message}
-}
-
-function tab(id,button){
- document.querySelectorAll("main section").forEach(s=>s.classList.add("hidden"));
- document.getElementById(id).classList.remove("hidden");
+function showTab(id,button){
+ document.querySelectorAll("main section").forEach(s=>s.classList.remove("active"));
+ document.getElementById(id).classList.add("active");
  document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
  button.classList.add("active");
- if(id==="offersTab")loadOffers();
-}
-
-function clearForm(){
- document.getElementById("offerId").value="";
- document.getElementById("offerName").value="";
- document.getElementById("description").value="";
- document.getElementById("payout").value="";
- document.getElementById("tracking").value="";
- document.getElementById("offerStatus").value="active";
- document.getElementById("offerMsg").textContent="";
-}
-
-async function saveOffer(){
- const id=document.getElementById("offerId").value;
- const body={
-  name:document.getElementById("offerName").value.trim(),
-  description:document.getElementById("description").value.trim(),
-  payout:Number(document.getElementById("payout").value),
-  tracking_url:document.getElementById("tracking").value.trim(),
-  status:document.getElementById("offerStatus").value
- };
-
- const msg=document.getElementById("offerMsg");
- if(!body.name||!Number.isFinite(body.payout)||body.payout<0){
-  msg.textContent="Enter a valid offer name and payout.";
-  return;
- }
-
- msg.textContent="Saving...";
- try{
-  await api("/api/admin/offers",{
-   method:id?"PUT":"POST",
-   body:JSON.stringify(id?{...body,id:Number(id)}:body)
-  });
-  msg.textContent=id?"Offer updated successfully.":"Offer added successfully.";
-  clearForm();
-  loadOffers();
- }catch(e){msg.textContent=e.message}
+ if(id==="offers")loadOffers();
 }
 
 async function loadOffers(){
  const list=document.getElementById("offerList");
  list.textContent="Loading offers...";
  try{
-  const data=await api("/api/admin/offers");
+  const data=await api("/api/offers");
   const offers=data.offers||[];
-  document.getElementById("totalOffers").textContent=offers.length;
   list.innerHTML="";
-
-  if(!offers.length){
-   list.textContent="No offers added yet.";
-   return;
-  }
-
+  if(!offers.length){list.textContent="No active offers available right now.";return}
   offers.forEach(o=>{
    const item=document.createElement("div");
    item.className="offer";
-
-   const title=document.createElement("strong");
+   const title=document.createElement("h3");
    title.textContent=o.name;
-
-   const info=document.createElement("p");
-   info.className="muted";
-   info.textContent="ID: "+o.id+" | Payout: ₹"+o.payout+" | "+o.status;
-
    const desc=document.createElement("p");
    desc.className="muted";
-   desc.textContent=o.description||"No description";
-
-   const link=document.createElement("p");
-   link.className="muted";
-   link.textContent=o.tracking_url||"No tracking URL";
-
-   const actions=document.createElement("div");
-   actions.className="actions";
-
-   const edit=document.createElement("button");
-   edit.textContent="Edit";
-   edit.onclick=()=>editOffer(o);
-
-   const del=document.createElement("button");
-   del.textContent="Delete";
-   del.className="danger";
-   del.onclick=()=>deleteOffer(o.id);
-
-   actions.append(edit,del);
-   item.append(title,info,desc,link,actions);
+   desc.textContent=o.description||"Complete this offer to earn rewards.";
+   const payout=document.createElement("h3");
+   payout.className="green";
+   payout.textContent="Reward: ₹"+Number(o.payout||0).toFixed(2);
+   item.append(title,desc,payout);
    list.appendChild(item);
   });
- }catch(e){
-  list.textContent="Error: "+e.message;
- }
-}
-
-function editOffer(o){
- document.getElementById("offerId").value=o.id;
- document.getElementById("offerName").value=o.name||"";
- document.getElementById("description").value=o.description||"";
- document.getElementById("payout").value=o.payout;
- document.getElementById("tracking").value=o.tracking_url||"";
- document.getElementById("offerStatus").value=o.status;
- document.getElementById("offerMsg").textContent="Editing offer #"+o.id;
- document.getElementById("offerName").scrollIntoView({behavior:"smooth"});
-}
-
-async function deleteOffer(id){
- if(!confirm("Delete this offer?"))return;
- try{
-  await api("/api/admin/offers",{
-   method:"DELETE",
-   body:JSON.stringify({id})
-  });
-  loadOffers();
- }catch(e){alert(e.message)}
+ }catch(e){list.textContent="Offers are temporarily unavailable. Please try again later."}
 }
 
 async function logout(){
@@ -283,7 +224,7 @@ async function logout(){
  location.reload();
 }
 
-checkAdmin();
+loadUser();
 </script>
 </body>
 </html>
