@@ -319,7 +319,58 @@ async function apiRequest(url,data){
  return result;
 }
 
+
 async function submitAuth(event){
+  event.preventDefault();
+
+  const message = document.getElementById("authMessage");
+  const button = document.getElementById("authSubmit");
+
+  const email = document.getElementById("authEmail").value.trim().toLowerCase();
+  const password = document.getElementById("authPassword").value;
+
+  button.disabled = true;
+  button.textContent = "PLEASE WAIT...";
+  message.textContent = "Connecting to server...";
+
+  try {
+    if (authMode === "register") {
+      const name = document.getElementById("authName").value.trim();
+
+      if (!name) throw new Error("Please enter your name.");
+      if (password.length < 8) {
+        throw new Error("Password must be at least 8 characters.");
+      }
+
+      const result = await apiRequest("/api/register", {
+        name,
+        email,
+        password
+      });
+
+      message.textContent = "Registration successful! Now login with your email and password.";
+
+      openAuth("login");
+      document.getElementById("authEmail").value = email;
+      document.getElementById("authPassword").value = "";
+      document.getElementById("authMessage").textContent =
+        "Account created! Please login now.";
+
+    } else {
+      await apiRequest("/api/login", { email, password });
+      await loadUser();
+
+      message.textContent = "Login successful!";
+    }
+
+  } catch (error) {
+    message.textContent = error.message;
+  } finally {
+    button.disabled = false;
+    button.textContent = authMode === "login" ? "LOGIN" : "CREATE ACCOUNT";
+  }
+}
+  {
  event.preventDefault();
 
  const message=document.getElementById("authMessage");
