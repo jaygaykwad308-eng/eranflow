@@ -1,40 +1,52 @@
 export async function onRequestPost({ request, env }) {
   try {
-    const { email, password } = await request.json();
+    const data = await request.json();
+
+    const email = String(data.email || "").trim().toLowerCase();
+    const password = String(data.password || "");
 
     if (!email || !password) {
-      return Response.json(
-        { success: false, message: "Email and password required" },
-        { status: 400 }
-      );
+      return Response.json({
+        success: false,
+        message: "Email and password required"
+      }, { status: 400 });
     }
 
     const user = await env.DB.prepare(
-      "SELECT * FROM users WHERE email = ?"
-    ).bind(email.trim().toLowerCase()).first();
+      "SELECT id, name, email, password_hash, balance FROM users WHERE email = ?"
+    ).bind(email).first();
 
-    if (!user) {
-      return Response.json(
-        { success: false, message: "Invalid email or password" },
-        { status: 401 }
-      );
+    if (!user || !user.password_hash) {
+      return Response.json({
+        success: false,
+        message: "Invalid email or password"
+      }, { status: 401 });
     }
 
-    const [algorithm, iterations, saltHex, hashHex] =
-      user.password_hash.split("$");
+    const parts = user.password_hash.split("$");
 
-    if (algorithm !== "pbkdf2" || iterations !== "310000") {
-      return Response.json(
-        { success: false, message: "Invalid password format" },
-        { status: 500 }
-      );
+    if (parts.length !== 4 || parts[0] !== "pbkdf2") {
+      throw new Error("Invalid password hash format");
     }
 
-    const fromHex = hex =>
-      new Uint8Array(hex.match(/.{2}/g).map(x => parseInt(x, 16)));
+    const iterations = Number(parts[1]);
 
-    const salt = fromHex(saltHex);
-    const expectedHash = fromHex(hashHex);
+    if (iterations !== 100000) {
+      throw new Error("Password iteration mismatch");
+    }
+
+    const fromHex = hex => {
+      if (!/^[0-9a-f]+$/i.test(hex) || hex.length % 2 !== 0) {
+        throw new Error("Invalid hash encoding");
+      }
+
+      return new Uint8Array(
+        hex.match(/.{2}/g).map(x => parseInt(x, 16))
+      );
+    };
+
+    const salt = fromHex(parts[2]);
+    const expectedHash = fromHex(parts[3]);
 
     const key = await crypto.subtle.importKey(
       "raw",
@@ -47,8 +59,8 @@ export async function onRequestPost({ request, env }) {
     const bits = await crypto.subtle.deriveBits(
       {
         name: "PBKDF2",
-        salt,
-        iterations: 310000,
+        salt: salt,
+        iterations: 100000,
         hash: "SHA-256"
       },
       key,
@@ -57,15 +69,18 @@ export async function onRequestPost({ request, env }) {
 
     const actualHash = new Uint8Array(bits);
 
-    if (actualHash.length !== expectedHash.length ||
-        !actualHash.every((b, i) => b === expectedHash[i])) {
-      return Response.json(
-        { success: false, message: "Invalid email or password" },
-        { status: 401 }
-      );
+    if (
+      actualHash.length !== expectedHash.length ||
+      !actualHash.every((value, index) => value === expectedHash[index])
+    ) {
+      return Response.json({
+        success: false,
+        message: "Invalid email or password"
+      }, { status: 401 });
     }
 
     const tokenBytes = crypto.getRandomValues(new Uint8Array(32));
+
     const token = Array.from(tokenBytes, b =>
       b.toString(16).padStart(2, "0")
     ).join("");
@@ -75,8 +90,9 @@ export async function onRequestPost({ request, env }) {
       new TextEncoder().encode(token)
     );
 
-    const tokenHash = Array.from(new Uint8Array(digest), b =>
-      b.toString(16).padStart(2, "0")
+    const tokenHash = Array.from(
+      new Uint8Array(digest),
+      b => b.toString(16).padStart(2, "0")
     ).join("");
 
     const expires = Math.floor(Date.now() / 1000) + 604800;
@@ -85,28 +101,26 @@ export async function onRequestPost({ request, env }) {
       "INSERT INTO sessions (user_id, token_hash, expires_at) VALUES (?, ?, ?)"
     ).bind(user.id, tokenHash, expires).run();
 
-    return Response.json(
-      {
-        success: true,
-        message: "Login successful",
-        user: {
-          id: user.id,
-          name: user.name,
-          email: user.email,
-          balance: user.balance
-        }
-      },
-      {
-        headers: {
-          "Set-Cookie": `session=${token}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=604800`
-        }
+    return Response.json({
+      success: true,
+      message: "Login successful",
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        balance: user.balance
       }
-    );
+    }, {
+      headers: {
+        "Set-Cookie": `session=${token}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=604800`
+      }
+    });
 
   } catch (error) {
-    return Response.json(
-      { success: false, message: "Login failed" },
-      { status: 500 }
-    );
+    return Response.json({
+      success: false,
+      message: error.message || "Login failed"
+    }, { status: 500 });
   }
-       }
+      }
+      
