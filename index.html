@@ -41,14 +41,15 @@ p{color:var(--muted);font-size:13px;line-height:1.8}
 nav{display:flex;gap:8px;border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:25px}
 nav button,.mobile button{background:none;color:var(--muted);padding:12px 17px;border-radius:8px;border:0;font-size:12px}
 nav button.active,.mobile button.active{background:#20301d;color:var(--green)}
-.page{display:none}.page.active{display:block}
+.page{display:none}
+.page.active{display:block}
 .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;margin-bottom:16px}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}
 .stat small{font-size:10px;color:var(--muted);letter-spacing:1px;font-weight:700}
 .stat strong{display:block;font-size:30px;margin-top:13px}
 .balance{background:linear-gradient(120deg,#20391b,#111a13);position:relative;overflow:hidden}
 .balance strong{font-size:48px;color:var(--green);display:block;margin-top:10px}
-.balance:after{content:"";position:absolute;width:170px;height:170px;border:1px solid #a5ff1820;border-radius:50%;right:-55px;top:-55px}
+.balance:after{content:"";position:absolute;width:170px;height:170px;border:1px solid #a5ff1820;border-radius:50%;right:-55px;top:-55px;pointer-events:none}
 .section-head{display:flex;justify-content:space-between;align-items:center;margin:28px 0 16px}
 .offers{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
 .offer{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;transition:.2s}
@@ -72,8 +73,12 @@ label{font-size:11px;color:#bdc9bf;font-weight:600}
 .user-chip{font-size:12px;color:var(--green);margin-right:8px}
 .mobile{display:none}
 footer{text-align:center;padding:25px;color:var(--muted);font-size:11px}
+button:disabled{opacity:.6;cursor:wait}
+[hidden]{display:none!important}
+
 @media(max-width:700px){
-header{padding:0 14px}.logo{font-size:23px}
+header{padding:0 14px}
+.logo{font-size:23px}
 main{padding:22px 14px 100px}
 .welcome{display:block}
 .stats{grid-template-columns:repeat(2,1fr);gap:9px}
@@ -274,7 +279,16 @@ function showPage(id,btn){
  document.getElementById(id).classList.add("active");
 
  document.querySelectorAll("nav button,.mobile button").forEach(x=>x.classList.remove("active"));
- if(btn) btn.classList.add("active");
+
+ if(btn){
+  btn.classList.add("active");
+ }else{
+  document.querySelectorAll("nav button,.mobile button").forEach(x=>{
+   if(x.getAttribute("onclick")?.includes("'"+id+"'")){
+    x.classList.add("active");
+   }
+  });
+ }
 
  window.scrollTo({top:0,behavior:"smooth"});
 }
@@ -319,58 +333,8 @@ async function apiRequest(url,data){
  return result;
 }
 
-
+/* FIXED REGISTER AND LOGIN */
 async function submitAuth(event){
-  event.preventDefault();
-
-  const message = document.getElementById("authMessage");
-  const button = document.getElementById("authSubmit");
-
-  const email = document.getElementById("authEmail").value.trim().toLowerCase();
-  const password = document.getElementById("authPassword").value;
-
-  button.disabled = true;
-  button.textContent = "PLEASE WAIT...";
-  message.textContent = "Connecting to server...";
-
-  try {
-    if (authMode === "register") {
-      const name = document.getElementById("authName").value.trim();
-
-      if (!name) throw new Error("Please enter your name.");
-      if (password.length < 8) {
-        throw new Error("Password must be at least 8 characters.");
-      }
-
-      const result = await apiRequest("/api/register", {
-        name,
-        email,
-        password
-      });
-
-      message.textContent = "Registration successful! Now login with your email and password.";
-
-      openAuth("login");
-      document.getElementById("authEmail").value = email;
-      document.getElementById("authPassword").value = "";
-      document.getElementById("authMessage").textContent =
-        "Account created! Please login now.";
-
-    } else {
-      await apiRequest("/api/login", { email, password });
-      await loadUser();
-
-      message.textContent = "Login successful!";
-    }
-
-  } catch (error) {
-    message.textContent = error.message;
-  } finally {
-    button.disabled = false;
-    button.textContent = authMode === "login" ? "LOGIN" : "CREATE ACCOUNT";
-  }
-}
-  {
  event.preventDefault();
 
  const message=document.getElementById("authMessage");
@@ -388,19 +352,35 @@ async function submitAuth(event){
    const name=document.getElementById("authName").value.trim();
 
    if(!name) throw new Error("Please enter your name.");
-   if(password.length<8) throw new Error("Password must be at least 8 characters.");
 
-   await apiRequest("/api/register",{name,email,password});
+   if(password.length<8){
+    throw new Error("Password must be at least 8 characters.");
+   }
 
-   message.textContent="Account created. Logging you in...";
+   await apiRequest("/api/register",{
+    name:name,
+    email:email,
+    password:password
+   });
 
-   await apiRequest("/api/login",{email,password});
+   openAuth("login");
+   document.getElementById("authEmail").value=email;
+   document.getElementById("authPassword").value="";
+   document.getElementById("authMessage").textContent=
+    "Account created successfully! Please login now.";
+
   }else{
-   await apiRequest("/api/login",{email,password});
+   await apiRequest("/api/login",{
+    email:email,
+    password:password
+   });
+
+   await loadUser();
+
+   document.getElementById("authMessage").textContent=
+    "Login successful!";
   }
 
-  await loadUser();
-  message.textContent="Success!";
  }catch(error){
   message.textContent=error.message;
  }finally{
@@ -410,8 +390,19 @@ async function submitAuth(event){
 }
 
 async function loadUser(){
- const response=await fetch("/api/me",{credentials:"same-origin"});
- const data=await response.json();
+ const response=await fetch("/api/me",{
+  credentials:"same-origin"
+ });
+
+ let data;
+
+ try{
+  data=await response.json();
+ }catch{
+  currentUser=null;
+  updateUserUI();
+  return;
+ }
 
  if(!response.ok || !data.success){
   currentUser=null;
@@ -429,9 +420,11 @@ function updateUserUI(){
  document.getElementById("headerLogin").hidden=loggedIn;
  document.getElementById("headerRegister").hidden=loggedIn;
  document.getElementById("headerLogout").hidden=!loggedIn;
- document.getElementById("headerUser").textContent=loggedIn?currentUser.name:"";
+ document.getElementById("headerUser").textContent=
+  loggedIn?currentUser.name:"";
 
  const balance=Number(currentUser?.balance||0).toFixed(2);
+
  document.getElementById("homeBalance").textContent="₹"+balance;
  document.getElementById("walletBalance").textContent="₹"+balance;
 
@@ -451,7 +444,9 @@ async function logoutUser(){
   await apiRequest("/api/logout",{});
  }catch(error){
   document.getElementById("authMessage").textContent=error.message;
+  return;
  }
+
  currentUser=null;
  updateUserUI();
  openAuth("login");
@@ -482,8 +477,9 @@ function viewOffer(name){
 
 function renderOffers(){
  const query=(document.getElementById("search")?.value||"").toLowerCase();
+
  document.getElementById("offerList").innerHTML=
- offers.filter(o=>o.name.toLowerCase().includes(query)).map(makeOffer).join("");
+  offers.filter(o=>o.name.toLowerCase().includes(query)).map(makeOffer).join("");
 }
 
 function requestWithdrawal(){
@@ -495,21 +491,30 @@ function requestWithdrawal(){
   message.textContent="Please login first.";
   return;
  }
+
  if(!amount || amount<100){
   message.textContent="Minimum withdrawal amount is ₹100.";
   return;
  }
+
  if(!upi){
   message.textContent="Please enter your UPI ID.";
   return;
  }
+
  message.textContent="Withdrawal system is not connected yet. No request was submitted.";
 }
 
-document.getElementById("featured").innerHTML=offers.slice(0,3).map(makeOffer).join("");
+/* INITIAL LOAD */
+document.getElementById("featured").innerHTML=
+ offers.slice(0,3).map(makeOffer).join("");
+
 renderOffers();
 openAuth("login");
-loadUser().catch(()=>{currentUser=null;updateUserUI();});
+loadUser().catch(()=>{
+ currentUser=null;
+ updateUserUI();
+});
 </script>
 
 </body>
