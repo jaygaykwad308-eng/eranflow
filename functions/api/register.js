@@ -61,7 +61,7 @@ export async function onRequestPost({ request, env }) {
       {
         name: "PBKDF2",
         salt,
-        iterations: 310000,
+        iterations: 100000,
         hash: "SHA-256"
       },
       key,
@@ -74,7 +74,7 @@ export async function onRequestPost({ request, env }) {
       ).join("");
 
     const passwordHash =
-      `pbkdf2$310000$${toHex(salt)}$${toHex(new Uint8Array(bits))}`;
+      `pbkdf2$100000$${toHex(salt)}$${toHex(new Uint8Array(bits))}`;
 
     // Save user
     const result = await env.DB.prepare(
