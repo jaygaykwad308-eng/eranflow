@@ -1,7 +1,6 @@
 
 export async function onRequestPost({ request, env }) {
   try {
-    // Check database connection
     if (!env.DB) {
       throw new Error("DB binding not connected");
     }
@@ -44,10 +43,7 @@ export async function onRequestPost({ request, env }) {
       }, { status: 409 });
     }
 
-    // Generate secure password hash
-    const salt = crypto.getRandomValues(
-      new Uint8Array(16)
-    );
+    const salt = crypto.getRandomValues(new Uint8Array(16));
 
     const key = await crypto.subtle.importKey(
       "raw",
@@ -76,12 +72,19 @@ export async function onRequestPost({ request, env }) {
     const passwordHash =
       `pbkdf2$100000$${toHex(salt)}$${toHex(new Uint8Array(bits))}`;
 
-    // Save user
+    // Compatibility value for the old required mobile column.
+    const mobilePlaceholder = `email:${email}`;
+
     const result = await env.DB.prepare(
       `INSERT INTO users
-       (name, email, password_hash, balance)
-       VALUES (?, ?, ?, 0)`
-    ).bind(name, email, passwordHash).run();
+       (mobile, name, email, password_hash, balance)
+       VALUES (?, ?, ?, ?, 0)`
+    ).bind(
+      mobilePlaceholder,
+      name,
+      email,
+      passwordHash
+    ).run();
 
     if (!result.success) {
       throw new Error("Database could not save user");
@@ -95,7 +98,7 @@ export async function onRequestPost({ request, env }) {
   } catch (error) {
     return Response.json({
       success: false,
-      message: error.message || "Unknown registration error"
+      message: error.message || "Registration failed"
     }, { status: 500 });
   }
 }
