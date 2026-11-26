@@ -4,77 +4,71 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>EarnFlow | Earn Rewards</title>
+<title>EarnFlow | Premium Rewards</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#080d0a;color:#eef5ef;font-family:Outfit,sans-serif}
-header{padding:18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #26372b}
-.logo{font-size:25px;font-weight:800;color:#a3ff70}
-button{padding:12px 17px;border:0;border-radius:9px;background:#a3ff70;color:#071008;font-weight:700;cursor:pointer}
-input{width:100%;padding:14px;margin:8px 0 15px;background:#101a13;color:white;border:1px solid #304536;border-radius:9px}
-label{font-size:13px;color:#aab9ad}
-main{max-width:950px;margin:auto;padding:20px 15px}
-.card{background:#111a14;border:1px solid #26372b;border-radius:15px;padding:19px;margin:14px 0}
-.muted{color:#91a196;font-size:13px}
+body{margin:0;background:#080d0a;color:#f2f7f2;font-family:Outfit,Arial,sans-serif}
+header{height:70px;padding:0 6%;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #26372b}
+.logo{font-size:25px;font-weight:800;color:#a3ff70;letter-spacing:1px}
+main{max-width:1050px;margin:auto;padding:25px 16px}
+.card{background:#111a14;border:1px solid #293b2e;border-radius:16px;padding:20px;margin:15px 0}
+h1,h2,h3,p{margin-top:0}
+.muted{color:#91a196;font-size:14px}
 .green{color:#a3ff70}
-.balance{font-size:34px;font-weight:800;color:#a3ff70;margin-top:10px}
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-nav{display:flex;gap:8px;overflow:auto;margin:20px 0}
-nav button{background:#17231a;color:white;white-space:nowrap}
+button{border:0;border-radius:10px;padding:13px 18px;background:#a3ff70;color:#071008;font-weight:800;cursor:pointer}
+input{width:100%;padding:14px;margin:8px 0 17px;border:1px solid #304536;border-radius:10px;background:#080e0a;color:white;font-size:15px}
+label{font-size:13px;color:#b8c7ba}
+.auth{max-width:410px;margin:55px auto}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.balance{font-size:34px;font-weight:800;color:#a3ff70;margin-top:12px}
+nav{display:flex;gap:9px;overflow:auto;margin:22px 0}
+nav button{background:#17231a;color:#eaf3eb;white-space:nowrap}
 nav button.active{background:#a3ff70;color:#071008}
 section{display:none}
 section.active{display:block}
 .hidden{display:none!important}
-.offer{background:#101a13;border:1px solid #304536;border-radius:12px;padding:16px;margin:12px 0}
-.auth{max-width:400px;margin:50px auto}
-a{color:#a3ff70}
-@media(max-width:500px){main{padding:12px}.balance{font-size:28px}}
+.offer{padding:16px;border:1px solid #304536;border-radius:13px;margin:12px 0;background:#0c140e}
+.offer h3{margin-bottom:7px}
+@media(max-width:550px){header{padding:0 15px}.grid{grid-template-columns:1fr 1fr}.card{padding:15px}.balance{font-size:27px}}
 </style>
 </head>
 <body>
-
 <header>
- <div class="logo">EARNFLOW<span style="color:white">.</span></div>
+ <div class="logo">EARNFLOW.</div>
  <button id="logoutBtn" class="hidden" onclick="logout()">Logout</button>
 </header>
 
 <div id="auth" class="auth card">
  <h2 id="authTitle">Welcome Back 👋</h2>
- <p class="muted">Login or create your EarnFlow account</p>
-
+ <p class="muted">Login to your rewards account</p>
  <div id="nameBox" class="hidden">
   <label>Full Name</label>
-  <input id="name" placeholder="Enter your name">
+  <input id="name" placeholder="Your full name">
  </div>
-
  <label>Email Address</label>
  <input id="email" type="email" placeholder="Enter email">
-
  <label>Password</label>
  <input id="password" type="password" placeholder="Minimum 8 characters">
-
- <button style="width:100%" onclick="submitAuth()" id="authBtn">Login</button>
- <p id="authMsg" class="muted"></p>
- <p class="muted" style="text-align:center">
-  <span id="switchText">New here?</span>
-  <a href="#" onclick="toggleAuth();return false" id="switchLink">Create Account</a>
- </p>
+ <button id="authBtn" style="width:100%" onclick="submitAuth()">Login</button>
+ <p id="authMsg" class="muted" style="margin-top:15px"></p>
+ <p class="muted"> <span id="switchText">New to EarnFlow?</span>
+ <a href="#" id="switchLink" onclick="toggleAuth();return false" style="color:#a3ff70">Create Account</a></p>
 </div>
 
 <main id="dashboard" class="hidden">
- <h2>Hey, <span class="green" id="userName">User</span> 👋</h2>
- <p class="muted">Welcome to your earning dashboard.</p>
+ <h2>Welcome, <span id="userName" class="green">User</span> 👋</h2>
+ <p class="muted">Your rewards dashboard</p>
 
  <div class="grid">
   <div class="card">
-   <div class="muted">Available Balance</div>
-   <div class="balance">₹<span id="balance">0</span></div>
+   <p class="muted">Available Balance</p>
+   <div class="balance">₹<span id="balance">0.00</span></div>
   </div>
   <div class="card">
-   <div class="muted">Account Status</div>
+   <p class="muted">Account Status</p>
    <h2 class="green">Active</h2>
-   <div class="muted">EarnFlow Member</div>
+   <p class="muted">EarnFlow Member</p>
   </div>
  </div>
 
@@ -88,19 +82,22 @@ a{color:#a3ff70}
  <section id="home" class="active">
   <div class="card">
    <h2>Your Earning Journey 🚀</h2>
-   <p class="muted">Complete available offers and track your rewards here.</p>
+   <p class="muted">Discover offers and earn rewards after successful verification.</p>
    <button onclick="showTab('offers',document.querySelectorAll('nav button')[1])">Explore Offers</button>
   </div>
   <div class="card">
-   <h3>Important</h3>
-   <p class="muted">Rewards are credited after offer verification and approval. Never pay money to complete an offer.</p>
+   <h3>How it works</h3>
+   <p class="muted">1. Explore available offers.</p>
+   <p class="muted">2. Complete the offer requirements.</p>
+   <p class="muted">3. Wait for advertiser verification.</p>
+   <p class="muted">4. Approved rewards are added to your wallet.</p>
   </div>
  </section>
 
  <section id="offers">
   <div class="card">
    <h2>Available Offers</h2>
-   <p class="muted">Explore earning opportunities.</p>
+   <p class="muted">Choose an offer to get started.</p>
    <div id="offerList" class="muted">Loading offers...</div>
   </div>
  </section>
@@ -108,9 +105,9 @@ a{color:#a3ff70}
  <section id="wallet">
   <div class="card">
    <h2>My Wallet</h2>
-   <div class="balance">₹<span id="walletBalance">0</span></div>
-   <p class="muted">Your current account balance.</p>
-   <p class="muted">Withdrawal requests will be available when payout functionality is connected.</p>
+   <div class="balance">₹<span id="walletBalance">0.00</span></div>
+   <p class="muted">Current available balance</p>
+   <p class="muted">Withdrawal requests will be enabled after payout setup.</p>
   </div>
  </section>
 
@@ -119,7 +116,7 @@ a{color:#a3ff70}
    <h2>My Profile</h2>
    <p>Name: <strong id="profileName">—</strong></p>
    <p>Email: <strong id="profileEmail">—</strong></p>
-   <p class="muted">Your EarnFlow account details.</p>
+   <p class="muted">Your account information</p>
   </div>
  </section>
 </main>
@@ -128,14 +125,14 @@ a{color:#a3ff70}
 let registering=false;
 
 async function api(url,options={}){
- const response=await fetch(url,{
+ const r=await fetch(url,{
   credentials:"include",
   ...options,
   headers:{"Content-Type":"application/json",...(options.headers||{})}
  });
- const data=await response.json();
- if(!response.ok)throw new Error(data.message||"Request failed");
- return data;
+ const d=await r.json();
+ if(!r.ok)throw new Error(d.message||"Request failed");
+ return d;
 }
 
 function toggleAuth(){
@@ -143,21 +140,21 @@ function toggleAuth(){
  document.getElementById("nameBox").classList.toggle("hidden",!registering);
  document.getElementById("authTitle").textContent=registering?"Create Account":"Welcome Back 👋";
  document.getElementById("authBtn").textContent=registering?"Register":"Login";
- document.getElementById("switchText").textContent=registering?"Already registered?":"New here?";
+ document.getElementById("switchText").textContent=registering?"Already registered?":"New to EarnFlow?";
  document.getElementById("switchLink").textContent=registering?"Login":"Create Account";
  document.getElementById("authMsg").textContent="";
 }
 
 async function submitAuth(){
  const msg=document.getElementById("authMsg");
- const email=document.getElementById("email").value.trim();
- const password=document.getElementById("password").value;
  msg.textContent="Please wait...";
  try{
+  const email=document.getElementById("email").value.trim();
+  const password=document.getElementById("password").value;
   if(registering){
    const name=document.getElementById("name").value.trim();
    await api("/api/register",{method:"POST",body:JSON.stringify({name,email,password})});
-   msg.textContent="Registration successful. Please login.";
+   msg.textContent="Account created. Please login.";
    registering=false;
    toggleAuth();
    return;
@@ -169,16 +166,17 @@ async function submitAuth(){
 
 async function loadUser(){
  try{
-  const data=await api("/api/me");
-  const user=data.user;
+  const d=await api("/api/me");
+  const u=d.user;
   document.getElementById("auth").classList.add("hidden");
   document.getElementById("dashboard").classList.remove("hidden");
   document.getElementById("logoutBtn").classList.remove("hidden");
-  document.getElementById("userName").textContent=user.name||"User";
-  document.getElementById("profileName").textContent=user.name||"—";
-  document.getElementById("profileEmail").textContent=user.email||"—";
-  document.getElementById("balance").textContent=Number(user.balance||0).toFixed(2);
-  document.getElementById("walletBalance").textContent=Number(user.balance||0).toFixed(2);
+  document.getElementById("userName").textContent=u.name||"User";
+  document.getElementById("profileName").textContent=u.name||"—";
+  document.getElementById("profileEmail").textContent=u.email||"—";
+  const balance=Number(u.balance||0).toFixed(2);
+  document.getElementById("balance").textContent=balance;
+  document.getElementById("walletBalance").textContent=balance;
   loadOffers();
  }catch(e){
   document.getElementById("auth").classList.remove("hidden");
@@ -186,11 +184,11 @@ async function loadUser(){
  }
 }
 
-function showTab(id,button){
+function showTab(id,btn){
  document.querySelectorAll("main section").forEach(s=>s.classList.remove("active"));
  document.getElementById(id).classList.add("active");
  document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
- button.classList.add("active");
+ btn.classList.add("active");
  if(id==="offers")loadOffers();
 }
 
@@ -198,10 +196,10 @@ async function loadOffers(){
  const list=document.getElementById("offerList");
  list.textContent="Loading offers...";
  try{
-  const data=await api("/api/offers");
-  const offers=data.offers||[];
+  const d=await api("/api/offers");
+  const offers=d.offers||[];
   list.innerHTML="";
-  if(!offers.length){list.textContent="No active offers available right now.";return}
+  if(!offers.length){list.textContent="No active offers available.";return}
   offers.forEach(o=>{
    const item=document.createElement("div");
    item.className="offer";
@@ -209,14 +207,14 @@ async function loadOffers(){
    title.textContent=o.name;
    const desc=document.createElement("p");
    desc.className="muted";
-   desc.textContent=o.description||"Complete this offer to earn rewards.";
-   const payout=document.createElement("h3");
-   payout.className="green";
-   payout.textContent="Reward: ₹"+Number(o.payout||0).toFixed(2);
-   item.append(title,desc,payout);
+   desc.textContent=o.description||"Complete this offer.";
+   const reward=document.createElement("h3");
+   reward.className="green";
+   reward.textContent="Reward ₹"+Number(o.payout||0).toFixed(2);
+   item.append(title,desc,reward);
    list.appendChild(item);
   });
- }catch(e){list.textContent="Offers are temporarily unavailable. Please try again later."}
+ }catch(e){list.textContent="Offers temporarily unavailable."}
 }
 
 async function logout(){
