@@ -4,8 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#080c09">
-<title>EARNFLOW | Rewards Platform</title>
+<title>EARNFLOW | Premium Rewards</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,101 +20,67 @@
 --white:#f5f8f5;
 }
 *{box-sizing:border-box}
-body{
-margin:0;background:var(--bg);color:var(--white);
-font-family:'Inter',sans-serif;
-}
-h1,h2,h3,.logo,.price,.balance strong,.stat strong{
-font-family:'Outfit',sans-serif;
-}
-.logo{
-font-family:'Space Grotesk',sans-serif;
-font-size:27px;font-weight:700;letter-spacing:-1.5px;
-}
+body{margin:0;background:var(--bg);color:var(--white);font-family:Inter,sans-serif}
+button,input{font:inherit}
+button{cursor:pointer}
+.logo{font:800 27px 'Space Grotesk';letter-spacing:-1.5px}
 .logo span{color:var(--green)}
-header{
-min-height:72px;border-bottom:1px solid var(--line);
-display:flex;align-items:center;justify-content:space-between;
-padding:0 6%;position:sticky;top:0;
-background:#080c09;z-index:10;
-}
-button{cursor:pointer;font-family:'Outfit',sans-serif;
-font-weight:700;letter-spacing:.4px}
-button:disabled{opacity:.5;cursor:not-allowed}
-.btn{padding:12px 19px;border-radius:9px;font-size:12px}
-.primary{background:var(--green);color:#10170b;border:0}
+header{height:72px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 6%;position:sticky;top:0;background:#080c09;z-index:20}
+.btn{padding:12px 19px;border-radius:9px;font:700 12px Outfit;letter-spacing:.4px;border:0}
+.primary{background:var(--green);color:#10170b}
 .secondary{background:#17221a;color:white;border:1px solid var(--line)}
-main{max-width:1180px;margin:auto;padding:30px 20px 100px}
-.welcome{display:flex;justify-content:space-between;align-items:center;margin:15px 0 30px}
+.btn:hover{filter:brightness(1.12);transform:translateY(-1px)}
+main{max-width:1180px;margin:auto;padding:30px 20px 110px}
+.welcome{display:flex;justify-content:space-between;align-items:center;margin:20px 0 35px}
 .eyebrow{color:var(--green);font-size:11px;font-weight:800;letter-spacing:2.5px}
-h1{font-size:clamp(38px,6vw,58px);line-height:1.05;letter-spacing:-2px;margin:14px 0}
-h2{font-size:22px;letter-spacing:-.5px}
+h1,h2,h3,.price,.balance strong,.stat strong{font-family:Outfit,sans-serif}
+h1{font-size:clamp(42px,6vw,65px);line-height:1.02;letter-spacing:-2.5px;margin:14px 0}
+h2{font-size:23px;letter-spacing:-.5px}
 p{color:var(--muted);font-size:13px;line-height:1.8}
 .green{color:var(--green)}
 nav{display:flex;gap:8px;border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:25px}
-nav button,.mobile button{background:none;color:var(--muted);padding:12px 17px;border-radius:8px;border:0}
+nav button,.mobile button{background:none;color:var(--muted);padding:12px 17px;border-radius:8px;border:0;font-size:12px}
 nav button.active,.mobile button.active{background:#20301d;color:var(--green)}
 .page{display:none}.page.active{display:block}
-.card{background:var(--card);border:1px solid var(--line);border-radius:15px;padding:21px;margin-bottom:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;margin-bottom:16px}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}
 .stat small{font-size:10px;color:var(--muted);letter-spacing:1px;font-weight:700}
-.stat strong{display:block;font-size:30px;margin-top:13px;font-weight:700}
-.balance{background:linear-gradient(120deg,#20391b,#111a13)}
-.balance strong{font-size:48px;color:var(--green)}
-.offers{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.offer{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
-.offer-top{display:flex;align-items:center;gap:12px}
-.offer-icon{width:45px;height:45px;display:grid;place-items:center;background:#293d20;color:var(--green);border-radius:11px;font-family:'Space Grotesk';font-size:21px;font-weight:700}
-.offer h3{font-size:16px;font-weight:700}
-.tag{font-size:9px;color:var(--green);background:#20301d;padding:5px 9px;border-radius:20px;letter-spacing:1px;font-weight:700}
-.price{font-size:30px;color:var(--green);font-weight:800;margin:18px 0}
+.stat strong{display:block;font-size:30px;margin-top:13px}
+.balance{background:linear-gradient(120deg,#20391b,#111a13);position:relative;overflow:hidden}
+.balance strong{font-size:48px;color:var(--green);display:block;margin-top:10px}
+.balance:after{content:"";position:absolute;width:170px;height:170px;border:1px solid #a5ff1820;border-radius:50%;right:-55px;top:-55px}
+.section-head{display:flex;justify-content:space-between;align-items:center;margin:28px 0 16px}
+.offers{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
+.offer{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;transition:.2s}
+.offer:hover{border-color:var(--green);transform:translateY(-3px)}
+.offer img{width:100%;height:155px;object-fit:cover;display:block;background:#18231a}
+.offer-body{padding:17px}
+.offer-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.offer h3{font-size:17px;margin:0}
+.tag{font-size:9px;color:var(--green);background:#20301d;padding:6px 9px;border-radius:20px;letter-spacing:1px;font-weight:700;white-space:nowrap}
+.price{font-size:30px;color:var(--green);font-weight:800;margin:15px 0}
 .offer button{width:100%}
-input{
-width:100%;padding:14px;background:#080e09;
-border:1px solid var(--line);border-radius:9px;
-color:white;margin:8px 0 16px;font-family:'Inter';
-outline:none;
-}
+input{width:100%;padding:14px;background:#080e09;border:1px solid var(--line);border-radius:9px;color:white;margin:8px 0 16px;outline:none}
 input:focus{border-color:var(--green)}
 label{font-size:11px;color:#bdc9bf;font-weight:600}
-.section-head{display:flex;justify-content:space-between;align-items:center;margin:25px 0 15px}
-.notice{background:#1b291c;padding:14px;border-radius:10px;color:#b9c6bb;font-size:11px;line-height:1.7}
+.notice{background:#1b291c;padding:14px;border-radius:10px;color:#b9c6bb;font-size:11px;line-height:1.7;margin-top:25px}
 .history{padding:14px 0;border-bottom:1px solid var(--line);color:var(--muted);font-size:13px}
+.auth-tabs{display:flex;gap:8px;margin:18px 0}
+.auth-tabs button{flex:1}
+.auth-form{max-width:460px;margin:20px auto}
+.auth-message{font-size:12px;margin:12px 0;min-height:18px;color:var(--green)}
+.user-chip{font-size:12px;color:var(--green);margin-right:8px}
 .mobile{display:none}
 footer{text-align:center;padding:25px;color:var(--muted);font-size:11px}
-
-/* AUTHENTICATION */
-.auth-box{max-width:470px;margin:25px auto}
-.auth-tabs{display:flex;gap:10px;margin:22px 0}
-.auth-tabs button{flex:1}
-.auth-form{margin-top:18px}
-.auth-form input{margin-bottom:17px}
-.auth-submit{width:100%;margin-top:8px}
-.auth-message{font-size:12px;margin:14px 0;color:var(--green);line-height:1.6}
-.auth-message.error{color:#ff7777}
-.user-info{background:#17251a;padding:18px;border-radius:12px;margin:18px 0}
-.user-info h2{margin-bottom:5px}
-.profile-label{color:var(--muted);font-size:11px}
-.header-actions{display:flex;gap:8px}
-.header-user{color:var(--green);font-size:12px;display:none}
-[hidden]{display:none!important}
-
 @media(max-width:700px){
-header{padding:0 15px}
-.logo{font-size:23px}
+header{padding:0 14px}.logo{font-size:23px}
 main{padding:22px 14px 100px}
 .welcome{display:block}
 .stats{grid-template-columns:repeat(2,1fr);gap:9px}
 .offers{grid-template-columns:1fr}
 nav{display:none}
-.mobile{
-display:flex;position:fixed;bottom:0;left:0;right:0;
-background:#111912;border-top:1px solid var(--line);
-justify-content:space-around;padding:10px 2px;z-index:10
-}
-.mobile button{font-size:10px;padding:8px 5px}
-.header-actions .btn{padding:10px 11px;font-size:10px}
-.header-user{display:none!important}
+.mobile{display:flex;position:fixed;bottom:0;left:0;right:0;background:#111912;border-top:1px solid var(--line);justify-content:space-around;padding:9px 2px;z-index:30}
+.mobile button{font-size:10px;padding:9px 5px}
 .balance strong{font-size:40px}
 }
 </style>
@@ -124,579 +89,377 @@ justify-content:space-around;padding:10px 2px;z-index:10
 <body>
 
 <header>
-<div class="logo">EARN<span>FLOW</span></div>
-
-<div class="header-actions" id="guestButtons">
-<button class="btn secondary" onclick="openAuth('login')">LOGIN</button>
-<button class="btn primary" onclick="openAuth('register')">REGISTER</button>
-</div>
-
-<div class="header-actions" id="userButtons" hidden>
-<span class="header-user" id="headerName"></span>
-<button class="btn secondary" onclick="logoutUser()">LOGOUT</button>
-</div>
+  <div class="logo">EARN<span>FLOW</span></div>
+  <div style="display:flex;align-items:center;gap:7px">
+    <span class="user-chip" id="headerUser"></span>
+    <button class="btn secondary" id="headerLogin" onclick="openAuth('login')">LOGIN</button>
+    <button class="btn primary" id="headerRegister" onclick="openAuth('register')">REGISTER</button>
+    <button class="btn secondary" id="headerLogout" onclick="logoutUser()" hidden>LOGOUT</button>
+  </div>
 </header>
 
 <main>
 
-<div class="welcome">
-<div>
-<div class="eyebrow">WELCOME TO EARNFLOW</div>
-<h1>Earn More.<br><span class="green">Grow More.</span></h1>
-<p>Discover premium campaigns and manage your rewards in one place.</p>
-<button class="btn primary" onclick="showPage('offers')">EXPLORE OFFERS →</button>
-</div>
-</div>
+<section class="welcome">
+  <div>
+    <div class="eyebrow">WELCOME TO EARNFLOW</div>
+    <h1>Earn More.<br><span class="green">Grow More.</span></h1>
+    <p>Discover premium campaigns and manage your rewards in one place.</p>
+    <button class="btn primary" onclick="showPage('offers')">EXPLORE OFFERS →</button>
+  </div>
+</section>
 
 <nav>
-<button class="active" onclick="showPage('home',this)">Dashboard</button>
-<button onclick="showPage('offers',this)">Offers</button>
-<button onclick="showPage('wallet',this)">Wallet</button>
-<button onclick="showPage('activity',this)">Activity</button>
-<button onclick="showPage('profile',this)">Profile</button>
+  <button class="active" onclick="showPage('home',this)">Dashboard</button>
+  <button onclick="showPage('offers',this)">Offers</button>
+  <button onclick="showPage('wallet',this)">Wallet</button>
+  <button onclick="showPage('activity',this)">Activity</button>
+  <button onclick="showPage('profile',this)">Profile</button>
 </nav>
 
-<!-- DASHBOARD -->
 <section id="home" class="page active">
+  <div class="stats">
+    <div class="card stat"><small>TOTAL CLICKS</small><strong id="clicks">0</strong></div>
+    <div class="card stat"><small>CONVERSIONS</small><strong>0</strong></div>
+    <div class="card stat"><small>NET EARNINGS</small><strong class="green">₹0</strong></div>
+    <div class="card stat"><small>PENDING REWARDS</small><strong>₹0</strong></div>
+  </div>
 
-<div class="stats">
-<div class="card stat">
-<small>TOTAL CLICKS</small>
-<strong id="clicks">0</strong>
-</div>
+  <div class="card balance">
+    <div class="eyebrow">AVAILABLE BALANCE</div>
+    <strong id="homeBalance">₹0.00</strong>
+    <p>Approved rewards available for withdrawal</p>
+    <button class="btn primary" onclick="showPage('wallet')">WITHDRAW FUNDS →</button>
+  </div>
 
-<div class="card stat">
-<small>CONVERSIONS</small>
-<strong id="conversions">0</strong>
-</div>
-
-<div class="card stat">
-<small>NET EARNINGS</small>
-<strong class="green" id="earnings">₹0</strong>
-</div>
-
-<div class="card stat">
-<small>PENDING REWARDS</small>
-<strong id="pending">₹0</strong>
-</div>
-</div>
-
-<div class="card balance">
-<div class="eyebrow">AVAILABLE BALANCE</div>
-<strong id="mainBalance">₹0.00</strong>
-<p>Approved rewards available for withdrawal</p>
-<button class="btn primary" onclick="showPage('wallet')">WITHDRAW FUNDS →</button>
-</div>
-
-<div class="section-head">
-<h2>Trending Offers</h2>
-<button class="btn secondary" onclick="showPage('offers')">VIEW ALL</button>
-</div>
-
-<div class="offers" id="featured"></div>
+  <div class="section-head">
+    <h2>Trending Offers</h2>
+    <button class="btn secondary" onclick="showPage('offers')">VIEW ALL</button>
+  </div>
+  <div class="offers" id="featured"></div>
 </section>
 
-<!-- OFFERS -->
 <section id="offers" class="page">
-<div class="section-head">
-<h2>Explore Campaigns</h2>
-<span class="tag">ALL OFFERS</span>
-</div>
-
-<input id="search" placeholder="Search campaigns..." oninput="renderOffers()">
-<div class="offers" id="offerList"></div>
+  <div class="section-head">
+    <h2>Explore Campaigns</h2>
+    <span class="tag">CAMPAIGNS</span>
+  </div>
+  <input id="search" placeholder="Search campaigns..." oninput="renderOffers()">
+  <div class="offers" id="offerList"></div>
 </section>
 
-<!-- WALLET -->
 <section id="wallet" class="page">
-<div class="card balance">
-<div class="eyebrow">YOUR WALLET</div>
-<strong id="walletBalance">₹0.00</strong>
-<p>Available reward balance</p>
-</div>
-
-<div class="card">
-<h2>Withdraw Rewards</h2>
-<p>Minimum withdrawal ₹100</p>
-<label>Withdrawal Amount</label>
-<input type="number" id="withdrawAmount" placeholder="Enter amount">
-
-<label>UPI ID</label>
-<input id="withdrawUPI" placeholder="example@upi">
-
-<button class="btn primary" onclick="alert('Withdrawal system is not connected yet.')">REQUEST WITHDRAWAL</button>
-</div>
+  <div class="card balance">
+    <div class="eyebrow">YOUR WALLET</div>
+    <strong id="walletBalance">₹0.00</strong>
+    <p>Available reward balance</p>
+  </div>
+  <div class="card">
+    <h2>Withdraw Rewards</h2>
+    <p>Minimum withdrawal ₹100</p>
+    <label>Withdrawal Amount</label>
+    <input type="number" id="withdrawAmount" placeholder="Enter amount">
+    <label>UPI ID</label>
+    <input id="withdrawUpi" placeholder="example@upi">
+    <button class="btn primary" onclick="requestWithdrawal()">REQUEST WITHDRAWAL</button>
+    <p id="withdrawMessage"></p>
+    <div class="notice">Withdrawal requests are not connected to a payout system yet. No real withdrawal will be submitted.</div>
+  </div>
 </section>
 
-<!-- ACTIVITY -->
 <section id="activity" class="page">
-<div class="card">
-<h2>My Activity</h2>
-<div class="history">No activity yet.</div>
-</div>
+  <div class="card">
+    <h2>My Activity</h2>
+    <div class="history">No activity yet.</div>
+  </div>
 </section>
 
-<!-- PROFILE / LOGIN / REGISTER -->
 <section id="profile" class="page">
-<div class="card auth-box">
+  <div class="card auth-form">
+    <h2 id="authTitle">Welcome Back</h2>
+    <p id="authSubtitle">Login to access your EarnFlow account.</p>
 
-<div id="authPanel">
-<div class="eyebrow">EARNFLOW ACCOUNT</div>
-<h2 id="authTitle">Welcome Back</h2>
-<p id="authSubtitle">Login to access your rewards dashboard.</p>
+    <div class="auth-tabs">
+      <button class="btn primary" id="loginTab" onclick="openAuth('login')">LOGIN</button>
+      <button class="btn secondary" id="registerTab" onclick="openAuth('register')">REGISTER</button>
+    </div>
 
-<div class="auth-tabs">
-<button id="loginTab" class="btn primary" onclick="setAuthMode('login')">LOGIN</button>
-<button id="registerTab" class="btn secondary" onclick="setAuthMode('register')">REGISTER</button>
-</div>
+    <form id="authForm" onsubmit="submitAuth(event)">
+      <div id="nameField" hidden>
+        <label>Full Name</label>
+        <input id="authName" type="text" placeholder="Enter your full name" autocomplete="name">
+      </div>
 
-<form id="loginForm" class="auth-form">
-<label>Email Address</label>
-<input id="loginEmail" type="email" placeholder="Enter your email" autocomplete="email" required>
+      <label>Email Address</label>
+      <input id="authEmail" type="email" placeholder="Enter your email" required autocomplete="email">
 
-<label>Password</label>
-<input id="loginPassword" type="password" placeholder="Enter password" autocomplete="current-password" required>
+      <label>Password</label>
+      <input id="authPassword" type="password" placeholder="Minimum 8 characters" required autocomplete="current-password">
 
-<button class="btn primary auth-submit" id="loginButton">LOGIN TO ACCOUNT →</button>
-</form>
+      <button class="btn primary" id="authSubmit" type="submit" style="width:100%">LOGIN</button>
+      <div class="auth-message" id="authMessage"></div>
+    </form>
 
-<form id="registerForm" class="auth-form" hidden>
-<label>Full Name</label>
-<input id="registerName" type="text" placeholder="Enter full name" autocomplete="name" maxlength="80" required>
-
-<label>Email Address</label>
-<input id="registerEmail" type="email" placeholder="Enter email" autocomplete="email" required>
-
-<label>Password</label>
-<input id="registerPassword" type="password" minlength="8" placeholder="Minimum 8 characters" autocomplete="new-password" required>
-
-<label>Confirm Password</label>
-<input id="confirmPassword" type="password" minlength="8" placeholder="Confirm password" autocomplete="new-password" required>
-
-<button class="btn primary auth-submit" id="registerButton">CREATE ACCOUNT →</button>
-</form>
-
-<div id="authMessage" class="auth-message" aria-live="polite"></div>
-</div>
-
-<!-- LOGGED IN PROFILE -->
-<div id="loggedPanel" hidden>
-<div class="eyebrow">ACCOUNT VERIFIED</div>
-<h2>My Profile</h2>
-
-<div class="user-info">
-<p>Welcome back,</p>
-<h2 class="green" id="userName"></h2>
-<div class="profile-label">REGISTERED EMAIL</div>
-<p id="userEmail"></p>
-</div>
-
-<button class="btn secondary" style="width:100%" onclick="logoutUser()">LOGOUT FROM ACCOUNT</button>
-<div id="logoutMessage" class="auth-message"></div>
-</div>
-
-</div>
+    <div id="profileDetails" hidden>
+      <div class="history">Name: <strong id="profileName"></strong></div>
+      <div class="history">Email: <strong id="profileEmail"></strong></div>
+      <div class="history">Account balance: <strong class="green" id="profileBalance">₹0.00</strong></div>
+      <button class="btn secondary" onclick="logoutUser()">LOGOUT</button>
+    </div>
+  </div>
 </section>
 
 <div class="notice">
-EarnFlow preview. Sample campaigns and payouts are illustrative, not verified live offers. Real campaign tracking and withdrawals are not yet enabled.
+  EarnFlow preview. Sample campaigns and payouts are illustrative, not verified live offers. Real partner tracking and withdrawals are not connected yet.
 </div>
 
 </main>
 
-<!-- MOBILE NAVIGATION -->
 <div class="mobile">
-<button class="active" onclick="showPage('home',this)">⌂ Home</button>
-<button onclick="showPage('offers',this)">◈ Offers</button>
-<button onclick="showPage('wallet',this)">₹ Wallet</button>
-<button onclick="showPage('activity',this)">▤ Activity</button>
-<button onclick="showPage('profile',this)">◉ Profile</button>
+  <button class="active" onclick="showPage('home',this)">⌂ Home</button>
+  <button onclick="showPage('offers',this)">◈ Offers</button>
+  <button onclick="showPage('wallet',this)">₹ Wallet</button>
+  <button onclick="showPage('activity',this)">▤ Activity</button>
+  <button onclick="showPage('profile',this)">◉ Profile</button>
 </div>
 
 <footer>© 2026 EARNFLOW. ALL RIGHTS RESERVED.</footer>
 
 <script>
-
-/* CAMPAIGN DATA */
-
 const offers=[
-{name:"Trading Account Offer",price:250,icon:"T",desc:"Complete eligible partner registration."},
-{name:"App Install Campaign",price:75,icon:"A",desc:"Install and complete campaign requirements."},
-{name:"Survey Campaign",price:50,icon:"S",desc:"Complete an eligible survey."},
-{name:"Finance Campaign",price:150,icon:"F",desc:"Complete partner campaign requirements."},
-{name:"New User Offer",price:120,icon:"N",desc:"Complete the listed new user steps."},
-{name:"Registration Offer",price:100,icon:"R",desc:"Register with the campaign partner."}
+ {
+  name:"Trading Account Offer",
+  price:250,
+  image:"https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=700",
+  desc:"Complete eligible partner registration."
+ },
+ {
+  name:"App Install Campaign",
+  price:75,
+  image:"https://images.unsplash.com/photo-1512941937669-90a1b58e7e9?w=700",
+  desc:"Install and complete campaign requirements."
+ },
+ {
+  name:"Survey Campaign",
+  price:50,
+  image:"https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=700",
+  desc:"Complete an eligible survey."
+ },
+ {
+  name:"Finance Campaign",
+  price:150,
+  image:"https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=700",
+  desc:"Complete partner campaign requirements."
+ },
+ {
+  name:"New User Offer",
+  price:120,
+  image:"https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=700",
+  desc:"Complete the listed new user steps."
+ },
+ {
+  name:"Registration Offer",
+  price:100,
+  image:"https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=700",
+  desc:"Register with the campaign partner."
+ }
 ];
 
+let authMode="login";
 let currentUser=null;
-
-/* NAVIGATION */
+let clickCount=0;
 
 function showPage(id,btn){
-document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+ document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
+ document.getElementById(id).classList.add("active");
 
-const page=document.getElementById(id);
-if(!page)return;
+ document.querySelectorAll("nav button,.mobile button").forEach(x=>x.classList.remove("active"));
+ if(btn) btn.classList.add("active");
 
-page.classList.add('active');
-
-document.querySelectorAll('nav button,.mobile button')
-.forEach(x=>x.classList.remove('active'));
-
-if(btn)btn.classList.add('active');
-
-window.scrollTo(0,0);
+ window.scrollTo({top:0,behavior:"smooth"});
 }
-
-/* OPEN AUTH */
 
 function openAuth(mode){
-showPage('profile');
-setAuthMode(mode);
+ authMode=mode;
+ showPage("profile");
+
+ document.getElementById("authForm").hidden=false;
+ document.getElementById("profileDetails").hidden=true;
+ document.getElementById("nameField").hidden=mode!=="register";
+
+ document.getElementById("authTitle").textContent=mode==="login"?"Welcome Back":"Create Account";
+ document.getElementById("authSubtitle").textContent=mode==="login"?"Login to access your EarnFlow account.":"Create your free EarnFlow account.";
+ document.getElementById("authSubmit").textContent=mode==="login"?"LOGIN":"CREATE ACCOUNT";
+ document.getElementById("loginTab").className=mode==="login"?"btn primary":"btn secondary";
+ document.getElementById("registerTab").className=mode==="register"?"btn primary":"btn secondary";
+ document.getElementById("authMessage").textContent="";
 }
-
-/* LOGIN / REGISTER SWITCH */
-
-function setAuthMode(mode){
-
-const login=mode==='login';
-
-document.getElementById('loginForm').hidden=!login;
-document.getElementById('registerForm').hidden=login;
-
-document.getElementById('authTitle').textContent=
-login?'Welcome Back':'Create Your Account';
-
-document.getElementById('authSubtitle').textContent=
-login
-?'Login to access your rewards dashboard.'
-:'Join EarnFlow and start your journey.';
-
-document.getElementById('loginTab').className=
-'btn '+(login?'primary':'secondary');
-
-document.getElementById('registerTab').className=
-'btn '+(!login?'primary':'secondary');
-
-document.getElementById('authMessage').textContent='';
-}
-
-/* API REQUEST */
 
 async function apiRequest(url,data){
-  const response=await fetch(url,{
-    method:'POST',
-    credentials:'same-origin',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify(data)
-  });
-  const raw=await response.text();
-  let result;
-  try{
-    result=JSON.parse(raw);
-  }catch{
-    throw new Error('Server HTTP '+response.status+': '+raw.slice(0,180));
+ const response=await fetch(url,{
+  method:"POST",
+  credentials:"same-origin",
+  headers:{"Content-Type":"application/json"},
+  body:JSON.stringify(data)
+ });
+
+ const raw=await response.text();
+ let result;
+
+ try{
+  result=JSON.parse(raw);
+ }catch{
+  throw new Error("Server HTTP "+response.status+": "+raw.slice(0,180));
+ }
+
+ if(!response.ok || !result.success){
+  throw new Error("HTTP "+response.status+": "+(result.message||"Request failed"));
+ }
+
+ return result;
+}
+
+async function submitAuth(event){
+ event.preventDefault();
+
+ const message=document.getElementById("authMessage");
+ const button=document.getElementById("authSubmit");
+
+ const email=document.getElementById("authEmail").value.trim().toLowerCase();
+ const password=document.getElementById("authPassword").value;
+
+ button.disabled=true;
+ button.textContent="PLEASE WAIT...";
+ message.textContent="Connecting to server...";
+
+ try{
+  if(authMode==="register"){
+   const name=document.getElementById("authName").value.trim();
+
+   if(!name) throw new Error("Please enter your name.");
+   if(password.length<8) throw new Error("Password must be at least 8 characters.");
+
+   await apiRequest("/api/register",{name,email,password});
+
+   message.textContent="Account created. Logging you in...";
+
+   await apiRequest("/api/login",{email,password});
+  }else{
+   await apiRequest("/api/login",{email,password});
   }
-  if(!response.ok || !result.success){
-    throw new Error('HTTP '+response.status+': '+(result.message||'Request failed'));
-  }
-  return result;
+
+  await loadUser();
+  message.textContent="Success!";
+ }catch(error){
+  message.textContent=error.message;
+ }finally{
+  button.disabled=false;
+  button.textContent=authMode==="login"?"LOGIN":"CREATE ACCOUNT";
+ }
 }
 
-const response=await fetch(url,{
-method:'POST',
-credentials:'same-origin',
-headers:{'Content-Type':'application/json'},
-body:JSON.stringify(data)
-});
+async function loadUser(){
+ const response=await fetch("/api/me",{credentials:"same-origin"});
+ const data=await response.json();
 
-let result;
+ if(!response.ok || !data.success){
+  currentUser=null;
+  updateUserUI();
+  return;
+ }
 
-try{
-result=await response.json();
-}catch{
-throw new Error('Server response error. Please try again.');
+ currentUser=data.user;
+ updateUserUI();
 }
 
-if(!response.ok || !result.success){
-throw new Error(result.message||'Something went wrong');
+function updateUserUI(){
+ const loggedIn=!!currentUser;
+
+ document.getElementById("headerLogin").hidden=loggedIn;
+ document.getElementById("headerRegister").hidden=loggedIn;
+ document.getElementById("headerLogout").hidden=!loggedIn;
+ document.getElementById("headerUser").textContent=loggedIn?currentUser.name:"";
+
+ const balance=Number(currentUser?.balance||0).toFixed(2);
+ document.getElementById("homeBalance").textContent="₹"+balance;
+ document.getElementById("walletBalance").textContent="₹"+balance;
+
+ if(loggedIn){
+  document.getElementById("authForm").hidden=true;
+  document.getElementById("profileDetails").hidden=false;
+  document.getElementById("authTitle").textContent="My Profile";
+  document.getElementById("authSubtitle").textContent="Your EarnFlow account details.";
+  document.getElementById("profileName").textContent=currentUser.name;
+  document.getElementById("profileEmail").textContent=currentUser.email;
+  document.getElementById("profileBalance").textContent="₹"+balance;
+ }
 }
-
-return result;
-}
-
-/* DISPLAY MESSAGE */
-
-function showMessage(message,error=false){
-
-const el=document.getElementById('authMessage');
-
-el.textContent=message;
-el.classList.toggle('error',error);
-}
-
-/* UPDATE USER INTERFACE */
-
-function updateUser(user){
-
-currentUser=user;
-
-document.getElementById('authPanel').hidden=true;
-document.getElementById('loggedPanel').hidden=false;
-
-document.getElementById('guestButtons').hidden=true;
-document.getElementById('userButtons').hidden=false;
-
-document.getElementById('userName').textContent=user.name;
-document.getElementById('userEmail').textContent=user.email;
-document.getElementById('headerName').textContent='HI, '+user.name;
-
-const balance=Number(user.balance||0).toFixed(2);
-
-document.getElementById('mainBalance').textContent='₹'+balance;
-document.getElementById('walletBalance').textContent='₹'+balance;
-document.getElementById('earnings').textContent='₹'+balance;
-}
-
-/* LOGOUT UI */
-
-function showLoggedOut(){
-
-currentUser=null;
-
-document.getElementById('authPanel').hidden=false;
-document.getElementById('loggedPanel').hidden=true;
-
-document.getElementById('guestButtons').hidden=false;
-document.getElementById('userButtons').hidden=true;
-
-document.getElementById('mainBalance').textContent='₹0.00';
-document.getElementById('walletBalance').textContent='₹0.00';
-document.getElementById('earnings').textContent='₹0';
-
-setAuthMode('login');
-}
-
-/* REGISTER */
-
-document.getElementById('registerForm').addEventListener('submit',async function(e){
-
-e.preventDefault();
-
-const button=document.getElementById('registerButton');
-
-const name=document.getElementById('registerName').value.trim();
-const email=document.getElementById('registerEmail').value.trim();
-const password=document.getElementById('registerPassword').value;
-const confirm=document.getElementById('confirmPassword').value;
-
-if(password!==confirm){
-showMessage('Passwords do not match.',true);
-return;
-}
-
-if(password.length<8){
-showMessage('Password must contain at least 8 characters.',true);
-return;
-}
-
-try{
-
-button.disabled=true;
-button.textContent='CREATING ACCOUNT...';
-
-showMessage('Creating your account...');
-
-await apiRequest('/api/register',{
-name:name,
-email:email,
-password:password
-});
-
-document.getElementById('loginEmail').value=email;
-document.getElementById('loginPassword').value='';
-
-document.getElementById('registerForm').reset();
-
-setAuthMode('login');
-showMessage('Account created successfully! Please login.');
-
-}catch(error){
-
-showMessage(error.message,true);
-
-}finally{
-
-button.disabled=false;
-button.textContent='CREATE ACCOUNT →';
-
-}
-
-});
-
-/* LOGIN */
-
-document.getElementById('loginForm').addEventListener('submit',async function(e){
-
-e.preventDefault();
-
-const button=document.getElementById('loginButton');
-
-const email=document.getElementById('loginEmail').value.trim();
-const password=document.getElementById('loginPassword').value;
-
-try{
-
-button.disabled=true;
-button.textContent='LOGGING IN...';
-
-showMessage('Verifying your account...');
-
-await apiRequest('/api/login',{
-email:email,
-password:password
-});
-
-/* VERIFY SESSION */
-
-const response=await fetch('/api/me',{
-credentials:'same-origin'
-});
-
-const result=await response.json();
-
-if(!response.ok||!result.success){
-throw new Error('Login session verification failed.');
-}
-
-updateUser(result.user);
-
-showPage('home');
-
-document.getElementById('loginForm').reset();
-
-}catch(error){
-
-showMessage(error.message,true);
-
-}finally{
-
-button.disabled=false;
-button.textContent='LOGIN TO ACCOUNT →';
-
-}
-
-});
-
-/* CHECK EXISTING LOGIN SESSION */
-
-async function checkSession(){
-
-try{
-
-const response=await fetch('/api/me',{
-credentials:'same-origin'
-});
-
-const result=await response.json();
-
-if(response.ok&&result.success){
-
-updateUser(result.user);
-
-}else{
-
-showLoggedOut();
-
-}
-
-}catch(error){
-
-showLoggedOut();
-
-}
-
-}
-
-/* LOGOUT */
 
 async function logoutUser(){
-
-try{
-
-await apiRequest('/api/logout',{});
-
-showLoggedOut();
-
-showPage('home');
-
-}catch(error){
-
-document.getElementById('logoutMessage').textContent=
-'Logout failed. Please try again.';
-
+ try{
+  await apiRequest("/api/logout",{});
+ }catch(error){
+  document.getElementById("authMessage").textContent=error.message;
+ }
+ currentUser=null;
+ updateUserUI();
+ openAuth("login");
+ document.getElementById("authMessage").textContent="You have been logged out.";
 }
-
-}
-
-/* OFFERS */
 
 function makeOffer(o){
-
-return `
-<div class="offer">
-
-<div class="offer-top">
-
-<div class="offer-icon">${o.icon}</div>
-
-<div>
-<h3>${o.name}</h3>
-<span class="tag">SAMPLE OFFER</span>
-</div>
-
-</div>
-
-<p>${o.desc}</p>
-
-<div class="price">₹${o.price}</div>
-
-<button class="btn primary"
-onclick="alert('Sample offer. Live partner tracking is not connected yet.')">
-VIEW DETAILS →
-</button>
-
-</div>
-`;
-
+ return `
+ <div class="offer">
+  <img src="${o.image}" alt="${o.name}" loading="lazy">
+  <div class="offer-body">
+   <div class="offer-top">
+    <h3>${o.name}</h3>
+    <span class="tag">OFFER</span>
+   </div>
+   <p>${o.desc}</p>
+   <div class="price">₹${o.price}</div>
+   <button class="btn primary" onclick="viewOffer('${o.name.replace(/'/g,"")}')">VIEW DETAILS →</button>
+  </div>
+ </div>`;
 }
 
-/* SEARCH OFFERS */
+function viewOffer(name){
+ clickCount++;
+ document.getElementById("clicks").textContent=clickCount;
+ alert(name+"\n\nThis is a sample campaign. Live partner tracking link is not connected yet.");
+}
 
 function renderOffers(){
-
-let q=(document.getElementById('search')?.value||'').toLowerCase();
-
-document.getElementById('offerList').innerHTML=
-
-offers
-.filter(o=>o.name.toLowerCase().includes(q))
-.map(makeOffer)
-.join('');
-
+ const query=(document.getElementById("search")?.value||"").toLowerCase();
+ document.getElementById("offerList").innerHTML=
+ offers.filter(o=>o.name.toLowerCase().includes(query)).map(makeOffer).join("");
 }
 
-/* INITIALIZE */
+function requestWithdrawal(){
+ const message=document.getElementById("withdrawMessage");
+ const amount=Number(document.getElementById("withdrawAmount").value);
+ const upi=document.getElementById("withdrawUpi").value.trim();
 
-document.getElementById('featured').innerHTML=
-offers.slice(0,3).map(makeOffer).join('');
+ if(!currentUser){
+  message.textContent="Please login first.";
+  return;
+ }
+ if(!amount || amount<100){
+  message.textContent="Minimum withdrawal amount is ₹100.";
+  return;
+ }
+ if(!upi){
+  message.textContent="Please enter your UPI ID.";
+  return;
+ }
+ message.textContent="Withdrawal system is not connected yet. No request was submitted.";
+}
 
+document.getElementById("featured").innerHTML=offers.slice(0,3).map(makeOffer).join("");
 renderOffers();
-
-checkSession();
-
+openAuth("login");
+loadUser().catch(()=>{currentUser=null;updateUserUI();});
 </script>
 
 </body>
-  </html>
-  
+</html>
