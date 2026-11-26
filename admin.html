@@ -1,0 +1,186 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EarnFlow | Admin Panel</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#080d0a;color:#eef5ef;font-family:Arial,sans-serif}
+header{height:70px;padding:0 22px;border-bottom:1px solid #203127;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:23px;font-weight:900;color:#a3ff70}
+.logo span{color:white}
+main{max-width:1200px;margin:auto;padding:25px 18px}
+h1{font-size:27px;margin:10px 0}
+.muted{color:#8d9b91;font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:25px 0}
+.card{background:#111a14;border:1px solid #24372a;border-radius:15px;padding:20px}
+.card small{color:#91a196}
+.number{font-size:30px;font-weight:800;margin-top:12px}
+.green{color:#a3ff70}
+nav{display:flex;gap:9px;overflow:auto;margin:24px 0}
+nav button,.btn{border:1px solid #304536;background:#152119;color:#eaf5eb;padding:12px 17px;border-radius:10px;cursor:pointer;white-space:nowrap}
+nav button.active,.primary{background:#a3ff70;color:#071008;border:0;font-weight:bold}
+.panel{background:#111a14;border:1px solid #24372a;border-radius:15px;padding:20px;margin-top:15px}
+input,select{width:100%;padding:13px;background:#080e0a;border:1px solid #304536;border-radius:9px;color:white;margin:7px 0 15px}
+label{font-size:13px;color:#a9b8ac}
+button{font-size:14px}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+table{width:100%;border-collapse:collapse;margin-top:15px}
+th,td{text-align:left;padding:13px;border-bottom:1px solid #26362a;font-size:13px}
+.tablewrap{overflow:auto}
+.hidden{display:none}
+#login{max-width:400px;margin:90px auto;padding:25px}
+.notice{padding:12px;border-radius:9px;background:#1c2b20;color:#b9f6a0;margin:12px 0}
+@media(max-width:700px){.grid{grid-template-columns:repeat(2,1fr)}.number{font-size:24px}header{padding:0 14px}main{padding:18px 12px}}
+</style>
+</head>
+<body>
+
+<header>
+ <div class="logo">EARN<span>FLOW</span> <small style="font-size:11px;color:#a3ff70">ADMIN</small></div>
+ <button class="btn" onclick="logout()">Logout</button>
+</header>
+
+<div id="login" class="panel">
+ <h1>Admin Access</h1>
+ <p class="muted">Login with your EarnFlow admin account.</p>
+ <label>Email</label>
+ <input id="email" type="email" placeholder="Admin email">
+ <label>Password</label>
+ <input id="password" type="password" placeholder="Password">
+ <button class="btn primary" style="width:100%" onclick="login()">Login</button>
+ <p id="loginMsg" class="muted"></p>
+</div>
+
+<main id="app" class="hidden">
+ <h1>Admin Dashboard</h1>
+ <p class="muted">Manage your EarnFlow platform.</p>
+
+ <div class="grid">
+  <div class="card"><small>Total Users</small><div class="number green" id="users">0</div></div>
+  <div class="card"><small>Total Offers</small><div class="number" id="offers">0</div></div>
+  <div class="card"><small>Conversions</small><div class="number">0</div></div>
+  <div class="card"><small>Withdrawals</small><div class="number">0</div></div>
+ </div>
+
+ <nav>
+  <button class="active" onclick="showTab('overview',this)">Overview</button>
+  <button onclick="showTab('usersTab',this)">Users</button>
+  <button onclick="showTab('offersTab',this)">Offers</button>
+  <button onclick="showTab('paymentsTab',this)">Payments</button>
+  <button onclick="showTab('settingsTab',this)">Settings</button>
+ </nav>
+
+ <section id="overview" class="panel">
+  <h2>Welcome, Admin</h2>
+  <p class="muted">Your platform control center.</p>
+  <div id="status" class="notice">Admin session active.</div>
+ </section>
+
+ <section id="usersTab" class="panel hidden">
+  <h2>User Management</h2>
+  <p class="muted">User management API will be connected next.</p>
+  <button class="btn" onclick="alert('User API is not connected yet')">Load Users</button>
+ </section>
+
+ <section id="offersTab" class="panel hidden">
+  <h2>Offer Management</h2>
+  <label>Offer Name</label><input id="offerName" placeholder="Campaign name">
+  <label>Payout (₹)</label><input id="payout" type="number" placeholder="100">
+  <label>Tracking URL</label><input id="tracking" placeholder="https://example.com">
+  <button class="btn primary" onclick="addOffer()">Add Offer (Demo)</button>
+  <p class="muted">Demo only. Real offer storage will be connected next.</p>
+  <div id="offerList"></div>
+ </section>
+
+ <section id="paymentsTab" class="panel hidden">
+  <h2>Payments & Withdrawals</h2>
+  <p class="muted">Payment approval API is not connected yet.</p>
+ </section>
+
+ <section id="settingsTab" class="panel hidden">
+  <h2>Platform Settings</h2>
+  <p class="muted">Settings controls will be connected next.</p>
+ </section>
+</main>
+
+<script>
+async function api(url,options={}){
+ const response=await fetch(url,{
+  credentials:"include",
+  ...options,
+  headers:{"Content-Type":"application/json",...(options.headers||{})}
+ });
+ const data=await response.json();
+ if(!response.ok)throw new Error(data.message||"Request failed");
+ return data;
+}
+
+async function checkAdmin(){
+ try{
+  const data=await api("/api/me");
+  if(!data.user||data.user.role!=="admin")throw new Error("Admin access denied");
+  document.getElementById("login").classList.add("hidden");
+  document.getElementById("app").classList.remove("hidden");
+  loadStats();
+ }catch(e){
+  document.getElementById("login").classList.remove("hidden");
+  document.getElementById("app").classList.add("hidden");
+ }
+}
+
+async function login(){
+ const msg=document.getElementById("loginMsg");
+ try{
+  await api("/api/login",{method:"POST",body:JSON.stringify({
+   email:document.getElementById("email").value,
+   password:document.getElementById("password").value
+  })});
+  await checkAdmin();
+  if(document.getElementById("app").classList.contains("hidden"))
+   throw new Error("This account is not an admin");
+ }catch(e){msg.textContent=e.message}
+}
+
+async function loadStats(){
+ try{
+  const data=await api("/api/admin/stats");
+  document.getElementById("users").textContent=data.stats.totalUsers;
+  document.getElementById("offers").textContent=data.stats.totalOffers;
+ }catch(e){
+  document.getElementById("status").textContent=e.message;
+ }
+}
+
+function showTab(id,button){
+ document.querySelectorAll("main section").forEach(x=>x.classList.add("hidden"));
+ document.getElementById(id).classList.remove("hidden");
+ document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));
+ button.classList.add("active");
+}
+
+function addOffer(){
+ const name=document.getElementById("offerName").value.trim();
+ const payout=document.getElementById("payout").value;
+ const url=document.getElementById("tracking").value.trim();
+ if(!name||!payout||!url)return alert("Fill all fields");
+ const item=document.createElement("div");
+ item.className="notice";
+ item.textContent=name+" — ₹"+payout+" — "+url;
+ document.getElementById("offerList").appendChild(item);
+ document.getElementById("offerName").value="";
+ document.getElementById("payout").value="";
+ document.getElementById("tracking").value="";
+}
+
+async function logout(){
+ try{await api("/api/logout",{method:"POST"})}catch(e){}
+ location.reload();
+}
+
+checkAdmin();
+</script>
+</body>
+</html>
