@@ -384,6 +384,24 @@ document.getElementById('authMessage').textContent='';
 /* API REQUEST */
 
 async function apiRequest(url,data){
+  const response=await fetch(url,{
+    method:'POST',
+    credentials:'same-origin',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify(data)
+  });
+  const raw=await response.text();
+  let result;
+  try{
+    result=JSON.parse(raw);
+  }catch{
+    throw new Error('Server HTTP '+response.status+': '+raw.slice(0,180));
+  }
+  if(!response.ok || !result.success){
+    throw new Error('HTTP '+response.status+': '+(result.message||'Request failed'));
+  }
+  return result;
+}
 
 const response=await fetch(url,{
 method:'POST',
